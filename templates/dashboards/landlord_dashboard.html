@@ -1,0 +1,13 @@
+<h1>Landlord Dashboard</h1>
+<nav>
+    <ul>
+        <li>
+            <a href="{% url 'apartment_list' %}">My Apartment</a>
+        </li>
+    </ul>
+</nav>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>

@@ -1,0 +1,39 @@
+<h2>Rent Records {{ tenancy.tenant.name }}</h2>
+
+<p>
+    Unit: {{ tenancy.unit.unit_number }} |
+    Apartment: {{ tenancy.unit.apartment.name }}
+</p>
+
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Rent</th>
+            <th>Paid</th>
+            <th>Balance</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in rent_records %}
+        <tr>
+            <td>{{ record.month }}</td>
+            <td>{{ record.rent_amount }}</td>
+            <td>{{ record.total_paid }}</td>
+            <td>{{ record.balance }}</td>
+            <td>
+                {% if record.is_fully_paid %}
+                ✅ Paid
+                {% else %}
+                ❌ Pending
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No rent records found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

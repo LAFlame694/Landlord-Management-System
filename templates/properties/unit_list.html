@@ -1,0 +1,37 @@
+<h2>Units in {{ apartment.name }}</h2>
+
+{% if user.is_landlord %}
+<a href="{% url 'unit_create' apartment.id %}">Add Unit</a>
+{% endif %}
+
+<ul>
+    {% for unit in units %}
+    <li>
+        Unit: {{ unit.unit_number }} |
+        Rent: {{ unit.rent }} |
+
+        {% if unit.is_occupied %}
+            Status: OCCUPIED
+            {% if unit.active_tenancy %}
+                | Tenant: {{ unit.active_tenancy.tenant.full_name }}
+                | <a href="{% url 'rent_record_list' unit.active_tenancy.id %}">
+                        Rent Records
+                  </a>
+                  
+                | <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}">
+                    Vacate
+                  </a>
+            {% endif %}
+        {% else %}
+            Status: VACANT
+            {% if user.is_landlord or user.is_caretaker %}
+                | <a href="{% url 'assign_tenant' unit.id %}">
+                    Assign Tenant
+                  </a>
+            {% endif %}
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>No units yet.</li>
+    {% endfor %}
+</ul>

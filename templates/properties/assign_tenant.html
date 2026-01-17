@@ -1,0 +1,11 @@
+<h2>Assign Tenant to Unit {{ unit.unit_number }}</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <h3>Tenant Details</h3>
+    {{ tenant_form.as_p }}
+
+    {{ assignment_form.unit.as_hidden }}
+
+    <button type="submit">Assign Tenant</button>
+</form>

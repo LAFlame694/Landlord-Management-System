@@ -1,0 +1,17 @@
+<h2>My Apartments</h2>
+
+<a href="{% url 'apartment_create' %}">Add Apartment</a>
+
+<ul>
+    {% for apartment in apartments %}
+    <li>
+        {{ apartment.name }} - {{ apartment.location }}
+        <a href="{% url 'apartment_edit' apartment.id %}">Edit</a>
+    </li>
+     <a href="{% url 'apartment_units' apartment.id %}">View Units</a>
+    {% empty %}
+    <li>No apartments yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'landlord_dashboard' %}">Back to Dashboard</a>

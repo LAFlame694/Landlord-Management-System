@@ -1,0 +1,19 @@
+<h1>Caretaker Dashboard</h1>
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Logout</button>
+</form>
+
+<h2>Assigned Apartment</h2>
+
+<ul>
+  {% for apartment in apartments %}
+  <li>
+    <strong>{{ apartment.name }}</strong><br />
+    Location: {{ apartment.location }}
+    <a href="{% url 'apartment_units' apartment.id %}"> View Units </a>
+  </li>
+  {% empty %}
+  <li>No apartments assigned to you.</li>
+  {% endfor %}
+</ul>
