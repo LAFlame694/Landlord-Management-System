@@ -13,27 +13,62 @@
             <th>Paid</th>
             <th>Balance</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for record in rent_records %}
-        <tr>
-            <td>{{ record.month }}</td>
-            <td>{{ record.rent_amount }}</td>
-            <td>{{ record.total_paid }}</td>
-            <td>{{ record.balance }}</td>
-            <td>
-                {% if record.is_fully_paid %}
-                ✅ Paid
-                {% else %}
-                ❌ Pending
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No rent records found.</td>
-        </tr>
-        {% endfor %}
+<tr>
+    <td>{{ record.month }}/{{ record.year }}</td>
+    <td>{{ record.rent_amount }}</td>
+    <td>{{ record.total_paid }}</td>
+    <td>{{ record.balance }}</td>
+    <td>
+        {% if record.is_fully_paid %}
+            ✅ Paid
+        {% else %}
+            ❌ Pending
+        {% endif %}
+    </td>
+    <td>
+        {% if not record.is_fully_paid %}
+            <a href="{% url 'record_payment' record.id %}">
+                Record Payment
+            </a>
+        {% else %}
+            Paid
+        {% endif %}
+    </td>
+</tr>
+
+<!-- Payment history row -->
+<tr>
+    <td colspan="6">
+        <strong>Payment History:</strong>
+
+        {% if record.payments.all %}
+            <ul>
+                {% for payment in record.payments.all %}
+                    <li>
+                        {{ payment.amount }}
+                        – {{ payment.payment_method }}
+                        {% if payment.reference %}
+                            ({{ payment.reference }})
+                        {% endif %}
+                        – {{ payment.paid_at|date:"Y-m-d H:i" }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <em>No payments recorded.</em>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6">No rent records found.</td>
+</tr>
+{% endfor %}
+
     </tbody>
 </table>

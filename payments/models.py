@@ -112,5 +112,16 @@ class Payment(models.Model):
 
     paid_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # recalculate total paid safely
+        total = self.rent_record.payments.aggregate(
+            total = models.Sum('amount')
+        )['total'] or 0
+
+        self.rent_record.total_paid = total
+        self.rent_record.save(update_fields=['total_paid'])
+
     def __str__(self):
         return f"{self.amount} - {self.payment_method}"

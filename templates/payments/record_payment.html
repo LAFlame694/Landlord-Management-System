@@ -1,0 +1,32 @@
+<h2>Record Payments</h2>
+
+<p>
+    Tenant: {{ rent_record.tenancy.tenant.full_name }} <br>
+    Month: {{ rent_record.month }}/{{ rent_record.year }} <br>
+    Rent: {{ rent_record.rent_amount }} <br>
+    Paid: {{ rent_record.total_paid }} <br>
+    Balance: {{ rent_record.balance }}
+</p>
+
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Amount</label><br>
+    <input type="number" step="0.01" name="amount" required><br><br>
+
+    <label>Payment Method</label> <br>
+    <select name="payment_method">
+        <option value="CASH">Cash</option>
+        <option value="MPESA">M-Pesa</option>
+        <option value="BANK">Bank</option>
+    </select><br><br>
+
+    <label>Reference (optional)</label><br>
+    <input type="text" name="reference"><br><br>
+
+    <button type="submit">Record Payment</button>
+</form>
