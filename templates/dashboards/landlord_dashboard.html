@@ -11,3 +11,26 @@
     {% csrf_token %}
     <button type="submit">Logout</button>
 </form>
+
+<hr>
+
+<h2>Overview for {{ month_name }}/{{ current_year }}</h2>
+
+<h3>Properties</h3>
+<ul>
+    <li>Total Apartments: {{ total_apartments }}</li>
+    <li>Total Units: {{ total_units }}</li>
+</ul>
+
+<h3>Occupancy</h3>
+<ul>
+    <li>Occupied Units: {{ occupied_units }}</li>
+    <li>Vacant Units: {{ vacant_units }}</li>
+</ul>
+
+<h3>Rent Summary</h3>
+<ul>
+    <li>Expected Rent: {{ expected_rent }}</li>
+    <li>Collected Rent: {{ collected_rent }}</li>
+    <li>Outstanding Balance: {{ outstanding_balance }}</li>
+</ul>

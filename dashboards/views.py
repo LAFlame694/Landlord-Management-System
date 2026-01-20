@@ -1,14 +1,76 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.utils import landlord_required, caretaker_required
+from datetime import date
+from django.db.models import Sum
+from properties.models import Apartment, Unit, Tenancy
+from payments.models import RentRecord
+import calendar
 
 # Create your views here.
 @login_required
+@landlord_required
 def landlord_dashboard(request):
-    landlord_required(request.user)
-    return render(request, 'dashboards/landlord_dashboard.html')
+    landlord = request.user
+
+    today = date.today()
+    current_year = today.year
+
+    current_month = today.month
+    month_name = calendar.month_name[current_month]
+
+
+    # Apartment and units
+    apartments = Apartment.objects.filter(landlord=landlord)
+    total_apartments = apartments.count()
+
+    units = Unit.objects.filter(apartment__landlord=landlord)
+    total_units = units.count()
+
+    # Occupancy
+    occupied_units = units.filter(
+        tenancies__is_active=True
+    ).distinct().count()
+
+    vacant_units = total_units - occupied_units
+
+    # Rent records for current month
+    rent_records = RentRecord.objects.filter(
+        tenancy__unit__apartment__landlord = landlord,
+        year = current_year,
+        month = current_month
+    )
+
+    expected_rent = rent_records.aggregate(
+        total=Sum('rent_amount')
+    )['total'] or 0
+
+    collected_rent = rent_records.aggregate(
+        total = Sum('total_paid')
+    )['total'] or 0
+
+    outstanding_balance = expected_rent - collected_rent
+
+    return render(request, 'dashboards/landlord_dashboard.html', {
+        'total_apartments': total_apartments,
+        'total_units': total_units,
+        'occupied_units': occupied_units,
+        'vacant_units': vacant_units,
+        'expected_rent': expected_rent,
+        'collected_rent': collected_rent,
+        'outstanding_balance': outstanding_balance,
+        'current_month': current_month,
+        'current_year': current_year,
+        'month_name': month_name,
+    })
 
 @login_required
 def caretaker_dashboard(request):
     caretaker_required(request.user)
     return render(request, 'dashboards/caretaker_dashboard.html')
+
+"""
+passwords:
+admin: osama694
+kamaa: kamaa694
+"""
