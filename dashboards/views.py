@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.utils import landlord_required, caretaker_required
 from datetime import date
-from django.db.models import Sum
+from django.db.models import Sum, F
 from properties.models import Apartment, Unit, Tenancy
 from payments.models import RentRecord
 import calendar
@@ -65,9 +65,35 @@ def landlord_dashboard(request):
     })
 
 @login_required
+@caretaker_required
 def caretaker_dashboard(request):
-    caretaker_required(request.user)
-    return render(request, 'dashboards/caretaker_dashboard.html')
+    caretaker = request.user
+
+    today = date.today()
+    current_year = today.year
+    current_month = today.month
+
+    apartments = Apartment.objects.filter(caretakers=caretaker)
+
+    # unpaid rent records for current month
+    unpaid_rent_records = RentRecord.objects.filter(
+        tenancy__unit__apartment__caretakers=caretaker,
+        year=current_year,
+        month=current_month,
+        rent_amount__gt=F('total_paid')
+    ).select_related(
+        'tenancy',
+        'tenancy__tenant',
+        'tenancy__unit',
+        'tenancy__unit__apartment'
+    )
+
+    return render(request, 'dashboards/caretaker_dashboard.html', {
+        'apartments': apartments,
+        'unpaid_rent_records': unpaid_rent_records,
+        'current_month': current_month,
+        'current_year': current_year,
+    })
 
 """
 passwords:

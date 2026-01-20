@@ -118,15 +118,6 @@ def apartment_units(request, apartment_id):
     })
 
 @login_required
-@caretaker_required
-def caretaker_dashboard(request):
-    apartments = Apartment.objects.filter(caretakers=request.user)
-
-    return render(request, 'dashboards/caretaker_dashboard.html', {
-        'apartments': apartments
-    })
-
-@login_required
 @landlord_required
 def apartment_list(request):
     apartments = Apartment.objects.filter(landlord=request.user)

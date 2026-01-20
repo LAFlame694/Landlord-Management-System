@@ -17,3 +17,21 @@
   <li>No apartments assigned to you.</li>
   {% endfor %}
 </ul>
+
+<h2>Unpaid Tenants (Current Month)</h2>
+
+<ul>
+  {% for record in unpaid_rent_records %}
+  <li>
+    <strong>{{ record.tenancy.tenant.full_name }}</strong><br>
+    Apartment: {{ record.tenancy.unit.apartment.name }} |
+    Unit: {{ record.tenancy.unit.unit_number }} <br>
+    Balance: {{ record.balance }}
+    <a href="{% url 'rent_record_list' record.tenancy.id %}">
+      View Rent Records
+    </a>
+  </li>
+  {% empty %}
+  <li>All tenants are fully paid</li>
+  {% endfor %}
+</ul>
