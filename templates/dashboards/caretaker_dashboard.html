@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}Caretaker Dashboard{% endblock %}
+
+{% block content %}
 <h1>Caretaker Dashboard</h1>
 <form method="post" action="{% url 'logout' %}">
   {% csrf_token %}
@@ -35,3 +40,4 @@
   <li>All tenants are fully paid</li>
   {% endfor %}
 </ul>
+{% endblock %}

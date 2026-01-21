@@ -8,6 +8,7 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         user = self.request.user
+        
         if user.is_landlord():
             return reverse_lazy('landlord_dashboard')
         elif user.is_caretaker():

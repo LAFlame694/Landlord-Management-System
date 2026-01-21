@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}Landlord Dasboard{% endblock %}
+
+{% block content %}
 <h1>Landlord Dashboard</h1>
 <nav>
     <ul>
@@ -53,3 +58,4 @@
     <li>Collected Rent: {{ collected_rent }}</li>
     <li>Outstanding Balance: {{ outstanding_balance }}</li>
 </ul>
+{% endblock %}

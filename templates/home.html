@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<h1>Rental Management System</h1>
+
+<p>
+    Manage apartments, tenants, rent, and maintenance efficiently.
+</p>
+
+{% if not user.is_authenticated %}
+<a href="{% url 'login' %}">
+    <button>Login</button>
+</a>
+{% else %}
+<p>You are already logged in.</p>
+{% endif %}
+{% endblock %}
