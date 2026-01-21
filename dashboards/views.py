@@ -6,8 +6,14 @@ from django.db.models import Sum, F
 from properties.models import Apartment, Unit, Tenancy
 from payments.models import RentRecord
 import calendar
+from calendar import month_name
 
 # Create your views here.
+import calendar
+from datetime import date
+from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
+
 @login_required
 @landlord_required
 def landlord_dashboard(request):
@@ -16,11 +22,11 @@ def landlord_dashboard(request):
     today = date.today()
     current_year = today.year
 
-    current_month = today.month
-    month_name = calendar.month_name[current_month]
+    # FILTER: default to current month
+    selected_month = int(request.GET.get('month', today.month))
+    month_name = calendar.month_name[selected_month]
 
-
-    # Apartment and units
+    # Apartments and units
     apartments = Apartment.objects.filter(landlord=landlord)
     total_apartments = apartments.count()
 
@@ -34,11 +40,11 @@ def landlord_dashboard(request):
 
     vacant_units = total_units - occupied_units
 
-    # Rent records for current month
+    # Rent records for selected month
     rent_records = RentRecord.objects.filter(
-        tenancy__unit__apartment__landlord = landlord,
-        year = current_year,
-        month = current_month
+        tenancy__unit__apartment__landlord=landlord,
+        year=current_year,
+        month=selected_month
     )
 
     expected_rent = rent_records.aggregate(
@@ -46,7 +52,7 @@ def landlord_dashboard(request):
     )['total'] or 0
 
     collected_rent = rent_records.aggregate(
-        total = Sum('total_paid')
+        total=Sum('total_paid')
     )['total'] or 0
 
     outstanding_balance = expected_rent - collected_rent
@@ -59,8 +65,8 @@ def landlord_dashboard(request):
         'expected_rent': expected_rent,
         'collected_rent': collected_rent,
         'outstanding_balance': outstanding_balance,
-        'current_month': current_month,
         'current_year': current_year,
+        'selected_month': selected_month,
         'month_name': month_name,
     })
 
