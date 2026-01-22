@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+<head>
+    <title>Landlord Dashboard</title>
+    {% block extra_css %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'dashboards/css/landlord_dashboard.css' %}">
+    {% endblock %}
+</head>
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1>Landlord Dashboard</h1>
+        <a href="#">My Apartments</a>
+    </div>
+
+    <!-- Filter Form -->
+    <form class="filter-form">
+        <label for="month">Select Month:</label>
+
+        <select id="month" name="month">
+            <option>January</option>
+            <option>February</option>
+            <option>March</option>
+            <option>April</option>
+            <option>May</option>
+            <option>June</option>
+            <option>July</option>
+            <option>August</option>
+            <option>September</option>
+            <option>October</option>
+            <option>November</option>
+            <option>December</option>
+        </select>
+
+        <button type="submit">Apply</button>
+    </form>
+
+    <!-- Overview -->
+    <h2 class="overview-title">Overview for March / 2026</h2>
+
+    <!-- Cards -->
+    <div class="cards-grid">
+
+        <div class="card properties">
+            <h3>Properties</h3>
+            <p><strong>Total apartments:</strong> 0</p>
+            <p><strong>Units:</strong> 0</p>
+        </div>
+
+        <div class="card occupancy">
+            <h3>Occupancy</h3>
+            <p><strong>Occupied units:</strong> 0</p>
+            <p><strong>Vacant units:</strong> 0</p>
+        </div>
+
+        <div class="card rent">
+            <h3>Rent Summary</h3>
+            <p><strong>Expected rent:</strong> 0</p>
+            <p><strong>Collected rent:</strong> 0</p>
+            <p><strong>Outstanding balances:</strong> 0</p>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

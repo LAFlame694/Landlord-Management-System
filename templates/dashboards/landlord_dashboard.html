@@ -1,61 +1,72 @@
 {% extends "base.html" %}
 
-{% block title %}Landlord Dasboard{% endblock %}
+{% load static %}
+
+<head>
+    <title>Landlord Dashboard</title>
+    {% block extra_css %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'dashboards/css/landlord_dashboard.css' %}">
+    {% endblock %}
+</head>
 
 {% block content %}
-<h1>Landlord Dashboard</h1>
-<nav>
-    <ul>
-        <li>
-            <a href="{% url 'apartment_list' %}">My Apartment</a>
-        </li>
-    </ul>
-</nav>
+<div class="dashboard-container">
 
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1>Landlord Dashboard</h1>
+        <a href="{% url 'apartment_list' %}">My Apartments</a>
+    </div>
 
-<hr>
+    <!-- Filter Form -->
+    <form class="filter-form" method="get">
+        <label for="month">Select Month:</label>
 
-<form method="get">
-    <label>Select Month:</label>
-    <select name="month">
-        <option value="1" {% if selected_month == 1 %}selected{% endif %}>January</option>
-        <option value="2" {% if selected_month == 2 %}selected{% endif %}>February</option>
-        <option value="3" {% if selected_month == 3 %}selected{% endif %}>March</option>
-        <option value="4" {% if selected_month == 4 %}selected{% endif %}>April</option>
-        <option value="5" {% if selected_month == 5 %}selected{% endif %}>May</option>
-        <option value="6" {% if selected_month == 6 %}selected{% endif %}>June</option>
-        <option value="7" {% if selected_month == 7 %}selected{% endif %}>July</option>
-        <option value="8" {% if selected_month == 8 %}selected{% endif %}>August</option>
-        <option value="9" {% if selected_month == 9 %}selected{% endif %}>September</option>
-        <option value="10" {% if selected_month == 10 %}selected{% endif %}>October</option>
-        <option value="11" {% if selected_month == 11 %}selected{% endif %}>November</option>
-        <option value="12" {% if selected_month == 12 %}selected{% endif %}>December</option>
-    </select>
-    <button type="submit">Apply</button>
-</form>
+        <select id="month" name="month">
+            <option value="1" {% if selected_month == 1 %}selected{% endif %}>January</option>
+            <option value="2" {% if selected_month == 2 %}selected{% endif %}>February</option>
+            <option value="3" {% if selected_month == 3 %}selected{% endif %}>March</option>
+            <option value="4" {% if selected_month == 4 %}selected{% endif %}>April</option>
+            <option value="5" {% if selected_month == 5 %}selected{% endif %}>May</option>
+            <option value="6" {% if selected_month == 6 %}selected{% endif %}>June</option>
+            <option value="7" {% if selected_month == 7 %}selected{% endif %}>July</option>
+            <option value="8" {% if selected_month == 8 %}selected{% endif %}>August</option>
+            <option value="9" {% if selected_month == 9 %}selected{% endif %}>September</option>
+            <option value="10" {% if selected_month == 10 %}selected{% endif %}>October</option>
+            <option value="11" {% if selected_month == 11 %}selected{% endif %}>November</option>
+            <option value="12" {% if selected_month == 12 %}selected{% endif %}>December</option>
+        </select>
 
-<h2>Overview for {{ month_name }}/{{ current_year }}</h2>
+        <button type="submit">Apply</button>
+    </form>
 
-<h3>Properties</h3>
-<ul>
-    <li>Total Apartments: {{ total_apartments }}</li>
-    <li>Total Units: {{ total_units }}</li>
-</ul>
+    <!-- Overview -->
+    <h2 class="overview-title">Overview for {{ month_name }}/{{ current_year }}</h2>
 
-<h3>Occupancy</h3>
-<ul>
-    <li>Occupied Units: {{ occupied_units }}</li>
-    <li>Vacant Units: {{ vacant_units }}</li>
-</ul>
+    <!-- Cards -->
+    <div class="cards-grid">
 
-<h3>Rent Summary</h3>
-<ul>
-    <li>Expected Rent: {{ expected_rent }}</li>
-    <li>Collected Rent: {{ collected_rent }}</li>
-    <li>Outstanding Balance: {{ outstanding_balance }}</li>
-</ul>
+        <div class="card properties">
+            <h3>Properties</h3>
+            <p><strong>Total apartments:</strong> {{ total_apartments }}</p>
+            <p><strong>Units:</strong> {{ total_units }}</p>
+        </div>
+
+        <div class="card occupancy">
+            <h3>Occupancy</h3>
+            <p><strong>Occupied units:</strong> {{ occupied_units }}</p>
+            <p><strong>Vacant units:</strong> {{ vacant_units }}</p>
+        </div>
+
+        <div class="card rent">
+            <h3>Rent Summary</h3>
+            <p><strong>Expected rent:</strong> {{ expected_rent }}</p>
+            <p><strong>Collected rent:</strong> {{ collected_rent }}</p>
+            <p><strong>Outstanding balances:</strong> {{ outstanding_balance }}</p>
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}
