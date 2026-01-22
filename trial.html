@@ -1,17 +1,80 @@
-<h2>My Apartments</h2>
+{% extends "base.html" %}
 
-<a href="{% url 'apartment_create' %}">Add Apartment</a>
+{% load static %}
+<head>
+    <title>Units</title>
+    {% block extra_css %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'properties/css/unit_list.css' %}">
+    {% endblock %}
+</head>
 
-<ul>
-    {% for apartment in apartments %}
-    <li>
-        {{ apartment.name }} - {{ apartment.location }}
-        <a href="{% url 'apartment_edit' apartment.id %}">Edit</a>
-    </li>
-     <a href="{% url 'apartment_units' apartment.id %}">View Units</a>
-    {% empty %}
-    <li>No apartments yet.</li>
-    {% endfor %}
-</ul>
+{% block content %}
+<div class="container">
 
-<a href="{% url 'landlord_dashboard' %}">Back to Dashboard</a>
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Units in Sunset Residency</h2>
+        <a href="#">Add Unit</a>
+    </div>
+
+    <!-- Units -->
+    <div class="units-grid">
+
+        <!-- Occupied Unit -->
+        <div class="unit-card occupied">
+            <div class="unit-header">
+                <h3>Unit A1</h3>
+                <span class="status-badge status-occupied">Occupied</span>
+            </div>
+
+            <div class="unit-details">
+                <p><span>Rent:</span> KES 25,000</p>
+                <p><span>Tenant:</span> John Mwangi</p>
+            </div>
+
+            <div class="unit-actions">
+                <a href="#" class="btn btn-records">Rent Records</a>
+                <a href="#" class="btn btn-vacate">Vacate</a>
+            </div>
+        </div>
+
+        <!-- Vacant Unit -->
+        <div class="unit-card vacant">
+            <div class="unit-header">
+                <h3>Unit B2</h3>
+                <span class="status-badge status-vacant">Vacant</span>
+            </div>
+
+            <div class="unit-details">
+                <p><span>Rent:</span> KES 20,000</p>
+                <p><span>Tenant:</span> —</p>
+            </div>
+
+            <div class="unit-actions">
+                <a href="#" class="btn btn-records">Rent Records</a>
+            </div>
+        </div>
+
+        <!-- Another Occupied Unit -->
+        <div class="unit-card occupied">
+            <div class="unit-header">
+                <h3>Unit C3</h3>
+                <span class="status-badge status-occupied">Occupied</span>
+            </div>
+
+            <div class="unit-details">
+                <p><span>Rent:</span> KES 30,000</p>
+                <p><span>Tenant:</span> Grace Wanjiku</p>
+            </div>
+
+            <div class="unit-actions">
+                <a href="#" class="btn btn-records">Rent Records</a>
+                <a href="#" class="btn btn-vacate">Vacate</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

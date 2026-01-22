@@ -1,68 +1,37 @@
-{% extends "base.html" %}
+<h2>Units in {{ apartment.name }}</h2>
 
-{% load static %}
+{% if user.is_landlord %}
+<a href="{% url 'unit_create' apartment.id %}">Add Unit</a>
+{% endif %}
 
-<head>
-    <title>My Apartments</title>
-    {% block extra_css %}
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'properties/css/apartment_list.css' %}">
-    {% endblock %}
-</head>
+<ul>
+    {% for unit in units %}
+    <li>
+        Unit: {{ unit.unit_number }} |
+        Rent: {{ unit.rent }} |
 
-{% block content %}
-<div class="container">
-
-    <!-- Header -->
-    <div class="page-header">
-        <h1>My Apartments</h1>
-
-        <div class="header-actions">
-            <a href="#" class="btn btn-add">Add Apartment</a>
-            <a href="#" class="btn btn-back">Back</a>
-        </div>
-    </div>
-
-    <!-- Apartments List -->
-    <div class="apartments-grid">
-
-        <!-- Apartment Card -->
-        <div class="apartment-card">
-            <h3>Sunset Residency</h3>
-            <p><strong>Location:</strong> Nairobi</p>
-            <p><strong>Total Units:</strong> 24</p>
-
-            <div class="card-actions">
-                <a href="#" class="btn btn-edit">Edit</a>
-                <a href="#" class="btn btn-view">View Units</a>
-            </div>
-        </div>
-
-        <!-- Apartment Card -->
-        <div class="apartment-card">
-            <h3>Green Valley Apartments</h3>
-            <p><strong>Location:</strong> Kiambu</p>
-            <p><strong>Total Units:</strong> 18</p>
-
-            <div class="card-actions">
-                <a href="#" class="btn btn-edit">Edit</a>
-                <a href="#" class="btn btn-view">View Units</a>
-            </div>
-        </div>
-
-        <!-- Apartment Card -->
-        <div class="apartment-card">
-            <h3>Ocean View Heights</h3>
-            <p><strong>Location:</strong> Mombasa</p>
-            <p><strong>Total Units:</strong> 30</p>
-
-            <div class="card-actions">
-                <a href="#" class="btn btn-edit">Edit</a>
-                <a href="#" class="btn btn-view">View Units</a>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-{% endblock %}
+        {% if unit.is_occupied %}
+            Status: OCCUPIED
+            {% if unit.active_tenancy %}
+                | Tenant: {{ unit.active_tenancy.tenant.full_name }}
+                | <a href="{% url 'rent_record_list' unit.active_tenancy.id %}">
+                        Rent Records
+                  </a>
+                  
+                | <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}">
+                    Vacate
+                  </a>
+            {% endif %}
+        {% else %}
+            Status: VACANT
+            {% if user.is_landlord or user.is_caretaker %}
+                | <a href="{% url 'assign_tenant' unit.id %}">
+                    Assign Tenant
+                  </a>
+            {% endif %}
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>No units yet.</li>
+    {% endfor %}
+</ul>

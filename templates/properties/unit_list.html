@@ -1,37 +1,84 @@
-<h2>Units in {{ apartment.name }}</h2>
+{% extends "base.html" %}
+{% load static %}
 
-{% if user.is_landlord %}
-<a href="{% url 'unit_create' apartment.id %}">Add Unit</a>
-{% endif %}
+<head>
+    <title>Units</title>
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'properties/css/unit_list.css' %}">
+    {% endblock %}
+</head>
 
-<ul>
-    {% for unit in units %}
-    <li>
-        Unit: {{ unit.unit_number }} |
-        Rent: {{ unit.rent }} |
+{% block content %}
+<div class="container">
 
-        {% if unit.is_occupied %}
-            Status: OCCUPIED
-            {% if unit.active_tenancy %}
-                | Tenant: {{ unit.active_tenancy.tenant.full_name }}
-                | <a href="{% url 'rent_record_list' unit.active_tenancy.id %}">
-                        Rent Records
-                  </a>
-                  
-                | <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}">
-                    Vacate
-                  </a>
-            {% endif %}
-        {% else %}
-            Status: VACANT
-            {% if user.is_landlord or user.is_caretaker %}
-                | <a href="{% url 'assign_tenant' unit.id %}">
-                    Assign Tenant
-                  </a>
-            {% endif %}
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Units in {{ apartment.name }}</h2>
+
+        {% if user.is_landlord %}
+        <a href="{% url 'unit_create' apartment.id %}">Add Unit</a>
         {% endif %}
-    </li>
-    {% empty %}
-    <li>No units yet.</li>
-    {% endfor %}
-</ul>
+    </div>
+
+    <!-- Units -->
+    <div class="units-grid">
+
+        {% for unit in units %}
+
+        <div class="unit-card {% if unit.is_occupied %}occupied{% else %}vacant{% endif %}">
+            <div class="unit-header">
+                <h3>Unit {{ unit.unit_number }}</h3>
+
+                {% if unit.is_occupied %}
+                    <span class="status-badge status-occupied">Occupied</span>
+                {% else %}
+                    <span class="status-badge status-vacant">Vacant</span>
+                {% endif %}
+            </div>
+
+            <div class="unit-details">
+                <p><span>Rent:</span> KES {{ unit.rent }}</p>
+
+                {% if unit.is_occupied and unit.active_tenancy %}
+                    <p>
+                        <span>Tenant:</span>
+                        {{ unit.active_tenancy.tenant.full_name }}
+                    </p>
+                {% else %}
+                    <p><span>Tenant:</span> —</p>
+                {% endif %}
+            </div>
+
+            <div class="unit-actions">
+
+                {% if unit.is_occupied and unit.active_tenancy %}
+                    <a href="{% url 'rent_record_list' unit.active_tenancy.id %}"
+                       class="btn btn-records">
+                        Rent Records
+                    </a>
+
+                    <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}"
+                       class="btn btn-vacate">
+                        Vacate
+                    </a>
+
+                {% else %}
+                    {% if user.is_landlord or user.is_caretaker %}
+                        <a href="{% url 'assign_tenant' unit.id %}"
+                           class="btn btn-records">
+                            Assign Tenant
+                        </a>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+
+        {% empty %}
+            <p>No units yet.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
