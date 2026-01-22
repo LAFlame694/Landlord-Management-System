@@ -1,61 +1,68 @@
 {% extends "base.html" %}
 
-{% block title %}Landlord Dasboard{% endblock %}
+{% load static %}
+
+<head>
+    <title>My Apartments</title>
+    {% block extra_css %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'properties/css/apartment_list.css' %}">
+    {% endblock %}
+</head>
 
 {% block content %}
-<h1>Landlord Dashboard</h1>
-<nav>
-    <ul>
-        <li>
-            <a href="{% url 'apartment_list' %}">My Apartment</a>
-        </li>
-    </ul>
-</nav>
+<div class="container">
 
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
+    <!-- Header -->
+    <div class="page-header">
+        <h1>My Apartments</h1>
 
-<hr>
+        <div class="header-actions">
+            <a href="#" class="btn btn-add">Add Apartment</a>
+            <a href="#" class="btn btn-back">Back</a>
+        </div>
+    </div>
 
-<form method="get">
-    <label>Select Month:</label>
-    <select name="month">
-        <option value="1" {% if selected_month == 1 %}selected{% endif %}>January</option>
-        <option value="2" {% if selected_month == 2 %}selected{% endif %}>February</option>
-        <option value="3" {% if selected_month == 3 %}selected{% endif %}>March</option>
-        <option value="4" {% if selected_month == 4 %}selected{% endif %}>April</option>
-        <option value="5" {% if selected_month == 5 %}selected{% endif %}>May</option>
-        <option value="6" {% if selected_month == 6 %}selected{% endif %}>June</option>
-        <option value="7" {% if selected_month == 7 %}selected{% endif %}>July</option>
-        <option value="8" {% if selected_month == 8 %}selected{% endif %}>August</option>
-        <option value="9" {% if selected_month == 9 %}selected{% endif %}>September</option>
-        <option value="10" {% if selected_month == 10 %}selected{% endif %}>October</option>
-        <option value="11" {% if selected_month == 11 %}selected{% endif %}>November</option>
-        <option value="12" {% if selected_month == 12 %}selected{% endif %}>December</option>
-    </select>
-    <button type="submit">Apply</button>
-</form>
+    <!-- Apartments List -->
+    <div class="apartments-grid">
 
-<h2>Overview for {{ month_name }}/{{ current_year }}</h2>
+        <!-- Apartment Card -->
+        <div class="apartment-card">
+            <h3>Sunset Residency</h3>
+            <p><strong>Location:</strong> Nairobi</p>
+            <p><strong>Total Units:</strong> 24</p>
 
-<h3>Properties</h3>
-<ul>
-    <li>Total Apartments: {{ total_apartments }}</li>
-    <li>Total Units: {{ total_units }}</li>
-</ul>
+            <div class="card-actions">
+                <a href="#" class="btn btn-edit">Edit</a>
+                <a href="#" class="btn btn-view">View Units</a>
+            </div>
+        </div>
 
-<h3>Occupancy</h3>
-<ul>
-    <li>Occupied Units: {{ occupied_units }}</li>
-    <li>Vacant Units: {{ vacant_units }}</li>
-</ul>
+        <!-- Apartment Card -->
+        <div class="apartment-card">
+            <h3>Green Valley Apartments</h3>
+            <p><strong>Location:</strong> Kiambu</p>
+            <p><strong>Total Units:</strong> 18</p>
 
-<h3>Rent Summary</h3>
-<ul>
-    <li>Expected Rent: {{ expected_rent }}</li>
-    <li>Collected Rent: {{ collected_rent }}</li>
-    <li>Outstanding Balance: {{ outstanding_balance }}</li>
-</ul>
+            <div class="card-actions">
+                <a href="#" class="btn btn-edit">Edit</a>
+                <a href="#" class="btn btn-view">View Units</a>
+            </div>
+        </div>
+
+        <!-- Apartment Card -->
+        <div class="apartment-card">
+            <h3>Ocean View Heights</h3>
+            <p><strong>Location:</strong> Mombasa</p>
+            <p><strong>Total Units:</strong> 30</p>
+
+            <div class="card-actions">
+                <a href="#" class="btn btn-edit">Edit</a>
+                <a href="#" class="btn btn-view">View Units</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}

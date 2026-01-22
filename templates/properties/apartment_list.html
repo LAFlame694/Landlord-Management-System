@@ -1,17 +1,50 @@
-<h2>My Apartments</h2>
+{% extends "base.html" %}
 
-<a href="{% url 'apartment_create' %}">Add Apartment</a>
+{% load static %}
 
-<ul>
-    {% for apartment in apartments %}
-    <li>
-        {{ apartment.name }} - {{ apartment.location }}
-        <a href="{% url 'apartment_edit' apartment.id %}">Edit</a>
-    </li>
-     <a href="{% url 'apartment_units' apartment.id %}">View Units</a>
-    {% empty %}
-    <li>No apartments yet.</li>
-    {% endfor %}
-</ul>
+<head>
+    <title>My Apartments</title>
+    {% block extra_css %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'properties/css/apartment_list.css' %}">
+    {% endblock %}
+</head>
 
-<a href="{% url 'landlord_dashboard' %}">Back to Dashboard</a>
+{% block content %}
+<div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+        <h1>My Apartments</h1>
+
+        <div class="header-actions">
+            <a href="{% url 'apartment_create' %}" class="btn btn-add">Add Apartment</a>
+            <a href="{% url 'landlord_dashboard' %}" class="btn btn-back">Back</a>
+        </div>
+    </div>
+
+    <!-- Apartments List -->
+    <div class="apartments-grid">
+        {% for apartment in apartments %}
+
+        <!-- Apartment Card -->
+        <div class="apartment-card">
+            <h3>{{ apartment.name }}</h3>
+            <p><strong>Location:</strong> {{ apartment.location }}</p>
+            <p><strong>Total Units:</strong> {{ apartment.total_units }}</p>
+
+            <div class="card-actions">
+                <a href="{% url 'apartment_edit' apartment.id %}" class="btn btn-edit">Edit</a>
+                <a href="{% url 'apartment_units' apartment.id %}" class="btn btn-view">View Units</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="apartment-card">
+            <h1>No apartments yet.</h1>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}

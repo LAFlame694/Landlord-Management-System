@@ -5,6 +5,7 @@ from .models import Apartment, Unit, Tenancy, Tenant
 from .forms import ApartmentForm, UnitForm, TenantForm, TenantAssignmentForm
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
+from django.db.models import Count
 
 # Create your views here.
 @login_required
@@ -120,7 +121,12 @@ def apartment_units(request, apartment_id):
 @login_required
 @landlord_required
 def apartment_list(request):
-    apartments = Apartment.objects.filter(landlord=request.user)
+    apartments = (
+        Apartment.objects
+        .filter(landlord=request.user)
+        .annotate(total_units=Count('units'))
+    )
+
     return render(request, 'properties/apartment_list.html', {
         'apartments': apartments
     })
