@@ -2,74 +2,92 @@
 
 {% load static %}
 
-<head>
-    <title>Assign Tenant</title>
+  <head>
+    <title>Rent Records</title>
 
     {% block extra_css %}
-     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'properties/css/assign_tenant.css' %}">
+    <link rel="stylesheet" href="{% static 'payments/css/rent_record_list.css' %}">
     {% endblock %}
 
-</head>
+  </head>
 
-{% block content %}
-<div class="container">
+  {% block content %}
+    <div class="container">
+      <h2>Rent Records – John Mwangi (Unit A1)</h2>
 
-    <!-- Header -->
-    <div class="page-header">
-        <h2>Assign Tenant to Unit A1</h2>
-        <a href="#" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i> Back
-        </a>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Rent</th>
+              <th>Paid</th>
+              <th>Balance</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- Record 1 -->
+            <tr>
+              <td>March 2026</td>
+              <td>KES 25,000</td>
+              <td>KES 25,000</td>
+              <td>KES 0</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+              <td><span class="action-paid">Paid</span></td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <div class="payment-history">
+                  <h4>Payment History</h4>
+
+                  <div class="payment-card">
+                    <p><span>Amount:</span> KES 15,000</p>
+                    <p><span>Method:</span> M-Pesa</p>
+                    <p><span>Reference:</span> QWE123XYZ</p>
+                    <p><span>Paid At:</span> 2026-03-05</p>
+                  </div>
+
+                  <div class="payment-card">
+                    <p><span>Amount:</span> KES 10,000</p>
+                    <p><span>Method:</span> Bank Transfer</p>
+                    <p><span>Reference:</span> BK99872</p>
+                    <p><span>Paid At:</span> 2026-03-12</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Record 2 -->
+            <tr>
+              <td>April 2026</td>
+              <td>KES 25,000</td>
+              <td>KES 10,000</td>
+              <td>KES 15,000</td>
+              <td><span class="badge badge-pending">Pending</span></td>
+              <td>
+                <a href="#" class="action-link">Record Payment</a>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <div class="payment-history">
+                  <h4>Payment History</h4>
+
+                  <div class="payment-card">
+                    <p><span>Amount:</span> KES 10,000</p>
+                    <p><span>Method:</span> Cash</p>
+                    <p><span>Reference:</span> —</p>
+                    <p><span>Paid At:</span> 2026-04-08</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <!-- Form -->
-    <div class="form-card">
-        <form>
-
-            <div class="form-group">
-                <label for="full_name">Full Name</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="full_name" name="full_name" placeholder="Enter tenant full name">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="phone" name="phone" placeholder="e.g. 0712 345 678">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="tenant@email.com">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="national_id">National ID</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-id-card"></i>
-                    <input type="text" id="national_id" name="national_id" placeholder="Enter national ID number">
-                </div>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-user-plus"></i> Assign Tenant
-                </button>
-            </div>
-
-        </form>
-    </div>
-
-</div>
-{% endblock %}
+    {% endblock %}

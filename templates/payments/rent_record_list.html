@@ -1,74 +1,98 @@
-<h2>Rent Records {{ tenancy.tenant.name }}</h2>
+{% extends "base.html" %}
+{% load static %}
 
-<p>
-    Unit: {{ tenancy.unit.unit_number }} |
-    Apartment: {{ tenancy.unit.apartment.name }}
-</p>
+<head>
+  <title>Rent Records</title>
 
-<table border="1" cellpadding="6">
-    <thead>
+  {% block extra_css %}
+  <link rel="stylesheet" href="{% static 'payments/css/rent_record_list.css' %}">
+  {% endblock %}
+</head>
+
+{% block content %}
+<div class="container">
+
+  <h2>
+    Rent Records – {{ tenancy.tenant.full_name }}
+    (Unit {{ tenancy.unit.unit_number }})
+  </h2>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
         <tr>
-            <th>Month</th>
-            <th>Rent</th>
-            <th>Paid</th>
-            <th>Balance</th>
-            <th>Status</th>
-            <th>Actions</th>
+          <th>Month</th>
+          <th>Rent</th>
+          <th>Paid</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+
+      <tbody>
         {% for record in rent_records %}
-<tr>
-    <td>{{ record.month }}/{{ record.year }}</td>
-    <td>{{ record.rent_amount }}</td>
-    <td>{{ record.total_paid }}</td>
-    <td>{{ record.balance }}</td>
-    <td>
-        {% if record.is_fully_paid %}
-            ✅ Paid
-        {% else %}
-            ❌ Pending
-        {% endif %}
-    </td>
-    <td>
-        {% if not record.is_fully_paid %}
-            <a href="{% url 'record_payment' record.id %}">
+
+        <!-- Rent Record Row -->
+        <tr>
+          <td>{{ record.month }}/{{ record.year }}</td>
+          <td>KES {{ record.rent_amount }}</td>
+          <td>KES {{ record.total_paid }}</td>
+          <td>KES {{ record.balance }}</td>
+          <td>
+            {% if record.is_fully_paid %}
+              <span class="badge badge-paid">Paid</span>
+            {% else %}
+              <span class="badge badge-pending">Pending</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if record.is_fully_paid %}
+              <span class="action-paid">Paid</span>
+            {% else %}
+              <a href="{% url 'record_payment' record.id %}" class="action-link">
                 Record Payment
-            </a>
-        {% else %}
-            Paid
-        {% endif %}
-    </td>
-</tr>
+              </a>
+            {% endif %}
+          </td>
+        </tr>
 
-<!-- Payment history row -->
-<tr>
-    <td colspan="6">
-        <strong>Payment History:</strong>
+        <!-- Payment History -->
+        <tr>
+          <td colspan="6">
+            <div class="payment-history">
+              <h4>Payment History</h4>
 
-        {% if record.payments.all %}
-            <ul>
+              {% if record.payments.all %}
                 {% for payment in record.payments.all %}
-                    <li>
-                        {{ payment.amount }}
-                        – {{ payment.payment_method }}
-                        {% if payment.reference %}
-                            ({{ payment.reference }})
-                        {% endif %}
-                        – {{ payment.paid_at|date:"Y-m-d H:i" }}
-                    </li>
+                  <div class="payment-card">
+                    <p><span>Amount:</span> KES {{ payment.amount }}</p>
+                    <p><span>Method:</span> {{ payment.payment_method }}</p>
+                    <p>
+                      <span>Reference:</span>
+                      {{ payment.reference|default:"—" }}
+                    </p>
+                    <p>
+                      <span>Paid At:</span>
+                      {{ payment.paid_at|date:"Y-m-d" }}
+                    </p>
+                  </div>
                 {% endfor %}
-            </ul>
-        {% else %}
-            <em>No payments recorded.</em>
-        {% endif %}
-    </td>
-</tr>
-{% empty %}
-<tr>
-    <td colspan="6">No rent records found.</td>
-</tr>
-{% endfor %}
+              {% else %}
+                <em>No payments recorded.</em>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
 
-    </tbody>
-</table>
+        {% empty %}
+        <tr>
+          <td colspan="6">No rent records found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}
