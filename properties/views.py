@@ -9,46 +9,51 @@ from django.db.models import Count
 
 # Create your views here.
 @login_required
-@login_required
 def assign_tenant(request, unit_id):
+
     if not (request.user.is_landlord() or request.user.is_caretaker()):
         raise PermissionDenied
 
     unit = get_object_or_404(Unit, id=unit_id)
+    apartment = unit.apartment
 
-    # Caretaker restriction
-    if request.user.is_caretaker():
-        if unit.apartment not in request.user.assigned_apartments.all():
+    # LANDLORD: must own the apartment
+    if request.user.is_landlord():
+        if apartment.landlord != request.user:
             raise PermissionDenied
 
+    # CARETAKER: must manage the apartment
+    if request.user.is_caretaker():
+        if apartment.caretakers != request.user:
+            raise PermissionDenied
+    
+    # Prevent assigning to occupied unit
+    if unit.status == Unit.OCCUPIED:
+        raise PermissionDenied("This unit is already occupied.")
+
     tenant_form = TenantForm()
-    assignment_form = TenantAssignmentForm(
-        initial={'unit': unit}
-    )
 
     if request.method == 'POST':
         tenant_form = TenantForm(request.POST)
-        assignment_form = TenantAssignmentForm(request.POST)
 
-        if tenant_form.is_valid() and assignment_form.is_valid():
+        if tenant_form.is_valid():
             tenant = tenant_form.save()
 
-            tenancy = assignment_form.save(commit=False)
-            tenancy.tenant = tenant
-            tenancy.is_active = True
-            tenancy.save()
+            Tenancy.objects.create(
+                tenant=tenant,
+                unit=unit,
+                is_active=True
+            )
 
-            unit.status = 'OCCUPIED'
+            unit.status = Unit.OCCUPIED
             unit.save()
 
-            return redirect('unit_list', apartment_id=unit.apartment.id)
-
+            return redirect('apartment_units', apartment_id=apartment.id)
+    
     return render(request, 'properties/assign_tenant.html', {
         'tenant_form': tenant_form,
-        'assignment_form': assignment_form,
         'unit': unit
     })
-
 
 @login_required
 def vacate_tenant(request, tenancy_id):
