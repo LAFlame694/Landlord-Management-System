@@ -5,6 +5,11 @@ class ApartmentForm(forms.ModelForm):
     class Meta:
         model = Apartment
         fields = ['name', 'location', 'caretakers']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'caretakers': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 class UnitForm(forms.ModelForm):
     class Meta:

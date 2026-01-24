@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{% static 'properties/css/apartment_edit_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="page-header">
+        <h2>Edit Apartment</h2>
+    </div>
+
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Apartment Name -->
+            <div class="form-group">
+                <label>Apartment Name</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-building"></i>
+                    {{ form.name }}
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div class="form-group">
+                <label>Location</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ form.location }}
+                </div>
+            </div>
+
+            <!-- Caretaker (From DB) -->
+            <div class="form-group">
+                <label>Caretaker</label>
+                <div class="input-wrapper select-wrapper">
+                    <i class="fa-solid fa-user-gear"></i>
+                    {{ form.caretakers }}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                </button>
+
+                <a href="{% url 'apartment_list' %}" class="btn btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+{% endblock %}

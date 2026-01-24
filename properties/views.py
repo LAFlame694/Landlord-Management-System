@@ -171,6 +171,6 @@ def apartment_edit(request, pk):
     else:
         form = ApartmentForm(instance=apartment)
     
-    return render(request, 'properties/apartment_form.html', {
+    return render(request, 'properties/apartment_edit_form.html', {
         'form': form
     })
