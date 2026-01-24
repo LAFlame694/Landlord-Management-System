@@ -1,11 +1,111 @@
-<h2>Assign Tenant to Unit {{ unit.unit_number }}</h2>
-<form method="post">
-    {% csrf_token %}
+{% extends "base.html" %}
 
-    <h3>Tenant Details</h3>
-    {{ tenant_form.as_p }}
+{% load static %}
 
-    {{ assignment_form.unit.as_hidden }}
+<head>
+    <title>Assign Tenant</title>
 
-    <button type="submit">Assign Tenant</button>
-</form>
+    {% block extra_css %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'properties/css/assign_tenant.css' %}">
+    {% endblock %}
+</head>
+
+{% block content %}
+<div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Assign Tenant to Unit {{ unit.unit_number }}</h2>
+        <a href="#" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="id_full_name">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                        type="text"
+                        id="id_full_name"
+                        name="full_name"
+                        placeholder="Enter tenant full name"
+                        value="{{ tenant_form.full_name.value|default:'' }}"
+                        required
+                    >
+                </div>
+                {{ tenant_form.full_name.errors }}
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="id_phone">Phone Number</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-phone"></i>
+                    <input
+                        type="tel"
+                        id="id_phone"
+                        name="phone"
+                        placeholder="e.g. 0712 345 678"
+                        value="{{ tenant_form.phone.value|default:'' }}"
+                        required
+                    >
+                </div>
+                {{ tenant_form.phone.errors }}
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="id_email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input
+                        type="email"
+                        id="id_email"
+                        name="email"
+                        placeholder="tenant@email.com"
+                        value="{{ tenant_form.email.value|default:'' }}"
+                    >
+                </div>
+                {{ tenant_form.email.errors }}
+            </div>
+
+            <!-- National ID -->
+            <div class="form-group">
+                <label for="id_national_id">National ID</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input
+                        type="text"
+                        id="id_national_id"
+                        name="national_id"
+                        placeholder="Enter national ID number"
+                        value="{{ tenant_form.national_id.value|default:'' }}"
+                        required
+                    >
+                </div>
+                {{ tenant_form.national_id.errors }}
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-user-plus"></i> Assign Tenant
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+{% endblock %}

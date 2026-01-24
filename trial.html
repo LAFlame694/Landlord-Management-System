@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
 {% load static %}
+
 <head>
-    <title>Units</title>
+    <title>Assign Tenant</title>
+
     {% block extra_css %}
+     <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'properties/css/unit_list.css' %}">
+    <link rel="stylesheet" href="{% static 'properties/css/assign_tenant.css' %}">
     {% endblock %}
+
 </head>
 
 {% block content %}
@@ -14,66 +20,55 @@
 
     <!-- Header -->
     <div class="page-header">
-        <h2>Units in Sunset Residency</h2>
-        <a href="#">Add Unit</a>
+        <h2>Assign Tenant to Unit A1</h2>
+        <a href="#" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
     </div>
 
-    <!-- Units -->
-    <div class="units-grid">
+    <!-- Form -->
+    <div class="form-card">
+        <form>
 
-        <!-- Occupied Unit -->
-        <div class="unit-card occupied">
-            <div class="unit-header">
-                <h3>Unit A1</h3>
-                <span class="status-badge status-occupied">Occupied</span>
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="full_name" name="full_name" placeholder="Enter tenant full name">
+                </div>
             </div>
 
-            <div class="unit-details">
-                <p><span>Rent:</span> KES 25,000</p>
-                <p><span>Tenant:</span> John Mwangi</p>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g. 0712 345 678">
+                </div>
             </div>
 
-            <div class="unit-actions">
-                <a href="#" class="btn btn-records">Rent Records</a>
-                <a href="#" class="btn btn-vacate">Vacate</a>
-            </div>
-        </div>
-
-        <!-- Vacant Unit -->
-        <div class="unit-card vacant">
-            <div class="unit-header">
-                <h3>Unit B2</h3>
-                <span class="status-badge status-vacant">Vacant</span>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="tenant@email.com">
+                </div>
             </div>
 
-            <div class="unit-details">
-                <p><span>Rent:</span> KES 20,000</p>
-                <p><span>Tenant:</span> —</p>
+            <div class="form-group">
+                <label for="national_id">National ID</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input type="text" id="national_id" name="national_id" placeholder="Enter national ID number">
+                </div>
             </div>
 
-            <div class="unit-actions">
-                <a href="#" class="btn btn-records">Rent Records</a>
-            </div>
-        </div>
-
-        <!-- Another Occupied Unit -->
-        <div class="unit-card occupied">
-            <div class="unit-header">
-                <h3>Unit C3</h3>
-                <span class="status-badge status-occupied">Occupied</span>
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-user-plus"></i> Assign Tenant
+                </button>
             </div>
 
-            <div class="unit-details">
-                <p><span>Rent:</span> KES 30,000</p>
-                <p><span>Tenant:</span> Grace Wanjiku</p>
-            </div>
-
-            <div class="unit-actions">
-                <a href="#" class="btn btn-records">Rent Records</a>
-                <a href="#" class="btn btn-vacate">Vacate</a>
-            </div>
-        </div>
-
+        </form>
     </div>
 
 </div>
