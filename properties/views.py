@@ -6,6 +6,7 @@ from .forms import ApartmentForm, UnitForm, TenantForm, TenantAssignmentForm
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Count
+from django.contrib import messages
 
 # Create your views here.
 @login_required
@@ -89,6 +90,7 @@ def unit_create(request, apartment_id):
             unit = form.save(commit=False)
             unit.apartment = apartment
             unit.save()
+            messages.success(request, "Unit added successfully.")
             return redirect('apartment_units', apartment_id=apartment.id)
     else:
         form = UnitForm()
@@ -111,8 +113,10 @@ def unit_edit(request, pk):
         form = UnitForm(request.POST, instance=unit)
         if form.is_valid():
             form.save()
+            messages.success(request, "Unit updated successfully.")
             return redirect('apartment_units', apartment_id=unit.apartment.id)
     else:
+        # this form represents an existing object
         form = UnitForm(instance=unit)
 
     return render(request, 'properties/unit_form.html', {
@@ -170,6 +174,7 @@ def apartment_create(request):
             apartment.landlord = request.user
             apartment.save()
             form.save_m2m()
+            messages.success(request, "Apartment added successfully.")
             return redirect('apartment_list')
     else:
         form = ApartmentForm()

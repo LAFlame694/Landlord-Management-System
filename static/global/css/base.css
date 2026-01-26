@@ -37,3 +37,39 @@ header a {
     cursor: pointer;
     border-radius: 4px;
 }
+
+.messages-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 600px;
+}
+
+.alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e6fffa;
+    border-left: 5px solid #38b2ac;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    font-weight: 500;
+}
+
+.alert-success {
+    color: #065f46;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #065f46;
+    line-height: 1;
+}
