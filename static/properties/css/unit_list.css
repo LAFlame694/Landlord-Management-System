@@ -153,6 +153,10 @@
         background-color: var(--primary);
     }
 
+    .btn-edit {
+        background-color: var(--secondary);
+    }
+
     .btn-records:hover {
         background-color: #1e40af;
     }

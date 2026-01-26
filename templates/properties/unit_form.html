@@ -1,7 +1,79 @@
-<h2>Add Unit to {{ apartment.name }}</h2>
+{% extends "base.html" %}
+{% load static %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+{% block extra_css %}
+<!-- Font Awesome -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'properties/css/unit_form.css' %}">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="form-card">
+
+        <div class="form-header">
+            <h2>
+                <i class="fa-solid fa-building"></i>
+
+                {% if form.instance.pk %}
+                    Edit Unit – {{ apartment.name }}
+                {% else %}
+                    Add Unit to {{ apartment.name }}
+                {% endif %}
+            </h2>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-door-open"></i>
+                    Unit Number
+                </label>
+                {{ form.unit_number }}
+                {{ form.unit_number.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-coins"></i>
+                    Rent Amount
+                </label>
+                {{ form.rent }}
+                {{ form.rent.errors }}
+            </div>
+
+            <div class="form-group full-width">
+                <label>
+                    <i class="fa-solid fa-circle-check"></i>
+                    Status
+                </label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-btn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    {% if form.instance.pk %}
+                        Update Unit
+                    {% else %}
+                        Save Unit
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

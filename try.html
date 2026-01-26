@@ -1,43 +1,7 @@
-{% extends "base.html" %}
+<h2>Add Unit to {{ apartment.name }}</h2>
 
-{% block title %}Caretaker Dashboard{% endblock %}
-
-{% block content %}
-<h1>Caretaker Dashboard</h1>
-<form method="post" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button type="submit">Logout</button>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
 </form>
-
-<h2>Assigned Apartment</h2>
-
-<ul>
-  {% for apartment in apartments %}
-  <li>
-    <strong>{{ apartment.name }}</strong><br />
-    Location: {{ apartment.location }}
-    <a href="{% url 'apartment_units' apartment.id %}"> View Units </a>
-  </li>
-  {% empty %}
-  <li>No apartments assigned to you.</li>
-  {% endfor %}
-</ul>
-
-<h2>Unpaid Tenants (Current Month)</h2>
-
-<ul>
-  {% for record in unpaid_rent_records %}
-  <li>
-    <strong>{{ record.tenancy.tenant.full_name }}</strong><br>
-    Apartment: {{ record.tenancy.unit.apartment.name }} |
-    Unit: {{ record.tenancy.unit.unit_number }} <br>
-    Balance: {{ record.balance }}
-    <a href="{% url 'rent_record_list' record.tenancy.id %}">
-      View Rent Records
-    </a>
-  </li>
-  {% empty %}
-  <li>All tenants are fully paid</li>
-  {% endfor %}
-</ul>
-{% endblock %}

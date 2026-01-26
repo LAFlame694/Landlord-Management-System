@@ -2,132 +2,68 @@
 
 {% load static %}
 
-<title>Caretaker Dashboard</title>
+<title>Add Unit</title>
 
 {% block extra_css %}
- <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'dashboards/css/caretaker_dashboard.css' %}">
+<!-- Font Awesome -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'dashboards/css/caretaker_dashboard.css' %}">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="dashboard">
-
-    <!-- Header -->
-    <div class="dashboard-header">
-        <i class="fa-solid fa-user-shield"></i>
-        <h1>Caretaker Dashboard</h1>
-    </div>
-
-    <!-- Assigned Apartments -->
-<div class="section">
-    <div class="section-title">
-        <i class="fa-solid fa-building"></i>
-        <span>Assigned Apartments</span>
-    </div>
-
-    <div class="apartments">
-        <div class="apartment-badge">
-            <i class="fa-solid fa-city"></i>
-            <span>Sunrise Apartments</span>
-            <a href="#" class="view-units-link">
-                <i class="fa-solid fa-door-open"></i>
-                View Units
-            </a>
+<div class="page-wrapper">
+    <div class="form-card">
+        <div class="form-header">
+            <h2>
+                <i class="fa-solid fa-building"></i>
+                Add Unit to Apartment Name
+            </h2>
         </div>
 
-        <div class="apartment-badge">
-            <i class="fa-solid fa-city"></i>
-            <span>Greenview Court</span>
-            <a href="#" class="view-units-link">
-                <i class="fa-solid fa-door-open"></i>
-                View Units
-            </a>
-        </div>
-
-        <div class="apartment-badge">
-            <i class="fa-solid fa-city"></i>
-            <span>Palm Heights</span>
-            <a href="#" class="view-units-link">
-                <i class="fa-solid fa-door-open"></i>
-                View Units
-            </a>
-        </div>
-    </div>
-</div>
-
-    <!-- Unpaid Tenants -->
-    <div class="section">
-        <div class="section-title">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>Tenants With Outstanding Balances</span>
-        </div>
-
-        <div class="tenant-grid">
-
-            <!-- Tenant Card -->
-            <div class="tenant-card">
-                <div class="tenant-name">Jane Wanjiku</div>
-
-                <div class="tenant-detail">
-                    <i class="fa-solid fa-building"></i>
-                    Apartment: Sunrise Apartments
-                </div>
-
-                <div class="tenant-detail">
+        <form>
+            <div class="form-group">
+                <label>
                     <i class="fa-solid fa-door-open"></i>
-                    Unit: B12
-                </div>
-
-                <div class="balance">
-                    Balance: KES 8,000
-                </div>
-
-                <div class="tenant-action">
-                    <a href="#">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        View Rent Records
-                    </a>
-                </div>
+                    Unit Number
+                </label>
+                <input type="text" placeholder="e.g. A12">
             </div>
 
-            <!-- Another Tenant -->
-            <div class="tenant-card">
-                <div class="tenant-name">Peter Mwangi</div>
-
-                <div class="tenant-detail">
-                    <i class="fa-solid fa-building"></i>
-                    Apartment: Greenview Court
-                </div>
-
-                <div class="tenant-detail">
-                    <i class="fa-solid fa-door-open"></i>
-                    Unit: A03
-                </div>
-
-                <div class="balance">
-                    Balance: KES 15,500
-                </div>
-
-                <div class="tenant-action">
-                    <a href="#">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        View Rent Records
-                    </a>
-                </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-coins"></i>
+                    Rent Amount
+                </label>
+                <input type="number" placeholder="e.g. 15000">
             </div>
 
-        </div>
-    </div>
+            <div class="form-group full-width">
+                <label>
+                    <i class="fa-solid fa-circle-check"></i>
+                    Status
+                </label>
+                <select>
+                    <option value="">Select status</option>
+                    <option value="vacant">Vacant</option>
+                    <option value="occupied">Occupied</option>
+                </select>
+            </div>
 
-    <!-- No Outstanding Balances -->
-    <div class="section">
-        <div class="no-balance">
-            <i class="fa-solid fa-circle-check"></i>
-            <strong>All tenants in your assigned apartments have fully paid their rent 🎉</strong>
-        </div>
+            <div class="form-actions">
+                <button type="submit" class="save-btn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Unit
+                </button>
+            </div>
+        </form>
     </div>
-
 </div>
 {% endblock %}

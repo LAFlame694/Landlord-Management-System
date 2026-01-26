@@ -15,6 +15,10 @@ class UnitForm(forms.ModelForm):
     class Meta:
         model = Unit
         fields = ['unit_number', 'rent', 'status']
+        widgets = {
+            'unit_number': forms.TextInput(attrs={'placeholder': 'e.g. A12'}),
+            'rent': forms.NumberInput(attrs={'placeholder': 'e.g. 15000'}),
+        }
 
 class TenantForm(forms.ModelForm):
     class Meta:

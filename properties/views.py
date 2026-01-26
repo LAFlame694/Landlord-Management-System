@@ -98,6 +98,30 @@ def unit_create(request, apartment_id):
         'apartment': apartment
     })
 
+@login_required
+@landlord_required
+def unit_edit(request, pk):
+    unit = get_object_or_404(
+        Unit,
+        pk=pk,
+        apartment__landlord=request.user
+    )
+
+    if request.method == 'POST':
+        form = UnitForm(request.POST, instance=unit)
+        if form.is_valid():
+            form.save()
+            return redirect('apartment_units', apartment_id=unit.apartment.id)
+    else:
+        form = UnitForm(instance=unit)
+
+    return render(request, 'properties/unit_form.html', {
+        'form': form,
+        'apartment': unit.apartment,
+        'unit': unit,
+        'is_edit': True
+    })
+
 # list units per apartment
 @login_required
 def apartment_units(request, apartment_id):
