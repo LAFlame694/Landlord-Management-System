@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: #f1f5f9;
+    color: #1f2937;
+}
+
+/* ---------- MAIN CARD ---------- */
+.card {
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    padding: 28px;
+}
+
+/* ---------- HEADER ---------- */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.card-header i {
+    font-size: 28px;
+    color: #2563eb;
+}
+
+.card-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* ---------- INFO GRID ---------- */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.info-box {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-left: 4px solid #2563eb;
+}
+
+.info-box span {
+    font-size: 12px;
+    color: #6b7280;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.info-box strong {
+    font-size: 16px;
+}
+
+/* ---------- FORM ---------- */
+.form-section {
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.input-field {
+    position: relative;
+    width: 100%;
+}
+
+.input-field i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+}
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+}
+
+/* ---------- ACTIONS ---------- */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #1e40af;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 480px) {
+    .card {
+        padding: 20px;
+    }
+
+    .card-header h1 {
+        font-size: 20px;
+    }
+}

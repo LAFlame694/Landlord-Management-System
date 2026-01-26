@@ -1,32 +1,91 @@
-<h2>Record Payments</h2>
+{% extends "base.html" %}
 
-<p>
-    Tenant: {{ rent_record.tenancy.tenant.full_name }} <br>
-    Month: {{ rent_record.month }}/{{ rent_record.year }} <br>
-    Rent: {{ rent_record.rent_amount }} <br>
-    Paid: {{ rent_record.total_paid }} <br>
-    Balance: {{ rent_record.balance }}
-</p>
+{% load static %}
 
-{% if error %}
-<p style="color: red;">{{ error }}</p>
-{% endif %}
+    {% block extra_css %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'payments/css/record_payment.css' %}">
+    {% endblock %}
 
-<form method="post">
-    {% csrf_token %}
+{% block content %}
+<div class="card">
 
-    <label>Amount</label><br>
-    <input type="number" step="0.01" name="amount" required><br><br>
+    <!-- Header -->
+    <div class="card-header">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <h1>Record Payment</h1>
+    </div>
 
-    <label>Payment Method</label> <br>
-    <select name="payment_method">
-        <option value="CASH">Cash</option>
-        <option value="MPESA">M-Pesa</option>
-        <option value="BANK">Bank</option>
-    </select><br><br>
+    <!-- Info Section -->
+    <div class="info-grid">
+        <div class="info-box">
+            <span>Tenant</span>
+            <strong>{{ rent_record.tenancy.tenant.full_name }}</strong>
+        </div>
 
-    <label>Reference (optional)</label><br>
-    <input type="text" name="reference"><br><br>
+        <div class="info-box">
+            <span>Month</span>
+            <strong>{{ rent_record.month }}/{{ rent_record.year }}</strong>
+        </div>
 
-    <button type="submit">Record Payment</button>
-</form>
+        <div class="info-box">
+            <span>Rent</span>
+            <strong>{{ rent_record.rent_amount }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Paid</span>
+            <strong>{{ rent_record.total_paid }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Balance</span>
+            <strong>{{ rent_record.balance }}</strong>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <form class="form-section" method="post" action="">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Amount Paid</label>
+            <div class="input-field">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <input type="number" placeholder="Enter amount paid" name="amount" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Payment Method</label>
+            <div class="input-field">
+                <i class="fa-solid fa-credit-card"></i>
+                <select name="payment_method">
+                    <option value="CASH">Cash</option>
+                    <option value="MPESA">M-pesa</option>
+                    <option value="BANK">Bank</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Reference (optional)</label>
+            <div class="input-field">
+                <i class="fa-solid fa-hashtag"></i>
+                <input type="text" placeholder="Reference number" name="reference">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn-primary">
+                <i class="fa-solid fa-check"></i>
+                Record Payment
+            </button>
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}

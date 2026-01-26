@@ -150,7 +150,7 @@ def apartment_create(request):
     else:
         form = ApartmentForm()
     
-    return render(request, 'properties/apartment_form.html', {
+    return render(request, 'properties/apartment_edit_form.html', {
         'form': form
     })
 

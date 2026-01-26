@@ -3,74 +3,91 @@
 {% load static %}
 
 <head>
-    <title>Edit Apartment</title>
     {% block extra_css %}
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <link rel="stylesheet" href="{% static 'properties/css/apartment_edit_form.css' %}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'payments/css/record_payment.css' %}">
     {% endblock %}
 </head>
 
 {% block content %}
-<div class="container">
+<div class="card">
 
     <!-- Header -->
-    <div class="page-header">
-        <h2>Apartment</h2>
+    <div class="card-header">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <h1>Record Payment</h1>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-grid">
+        <div class="info-box">
+            <span>Tenant</span>
+            <strong>John Doe</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Month</span>
+            <strong>January 2026</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Rent</span>
+            <strong>KES 25,000</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Paid</span>
+            <strong>KES 15,000</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Balance</span>
+            <strong>KES 10,000</strong>
+        </div>
     </div>
 
     <!-- Form -->
-    <div class="form-card">
-        <form>
+    <form class="form-section">
 
-            <!-- Apartment Name -->
-            <div class="form-group">
-                <label for="name">Apartment Name</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-building"></i>
-                    <input type="text" id="name" name="name" value="Sunset Residency">
-                </div>
+        <div class="form-group">
+            <label>Amount Paid</label>
+            <div class="input-field">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <input type="number" placeholder="Enter amount paid">
             </div>
+        </div>
 
-            <!-- Location -->
-            <div class="form-group">
-                <label for="location">Location</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <input type="text" id="location" name="location" value="Nairobi">
-                </div>
+        <div class="form-group">
+            <label>Payment Method</label>
+            <div class="input-field">
+                <i class="fa-solid fa-credit-card"></i>
+                <select>
+                    <option value="">Select payment method</option>
+                    <option>Cash</option>
+                    <option>Mpesa</option>
+                    <option>Bank</option>
+                </select>
             </div>
+        </div>
 
-            <!-- Caretaker (Dropdown from DB) -->
-            <div class="form-group">
-                <label for="caretaker">Caretaker</label>
-                <div class="input-wrapper select-wrapper">
-                    <i class="fa-solid fa-user-gear"></i>
-                    <select id="caretaker" name="caretaker">
-                        <!-- Django will loop caretakers here -->
-                        <option value="">Select caretaker</option>
-                        <option value="1" selected>Peter Mwangi</option>
-                        <option value="2">Mary Wanjiru</option>
-                        <option value="3">Joseph Otieno</option>
-                        <option value="4">Anne Njeri</option>
-                        <option value="5">Samuel Kiptoo</option>
-                    </select>
-                </div>
+        <div class="form-group">
+            <label>Reference</label>
+            <div class="input-field">
+                <i class="fa-solid fa-hashtag"></i>
+                <input type="text" placeholder="Transaction or reference number">
             </div>
+        </div>
 
-            <!-- Actions -->
-            <div class="form-actions">
-                <button type="submit" class="btn btn-save">
-                    <i class="fa-solid fa-floppy-disk"></i> Save Changes
-                </button>
-                <a href="#" class="btn btn-back">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </a>
-            </div>
+        <div class="actions">
+            <button type="submit" class="btn-primary">
+                <i class="fa-solid fa-check"></i>
+                Record Payment
+            </button>
+        </div>
 
-        </form>
-    </div>
+    </form>
 
 </div>
 {% endblock %}
