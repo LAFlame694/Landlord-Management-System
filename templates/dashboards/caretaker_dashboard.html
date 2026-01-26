@@ -1,43 +1,105 @@
 {% extends "base.html" %}
 
-{% block title %}Caretaker Dashboard{% endblock %}
+{% load static %}
+
+<title>Caretaker Dashboard</title>
+
+{% block extra_css %}
+ <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'dashboards/css/caretaker_dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>Caretaker Dashboard</h1>
-<form method="post" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button type="submit">Logout</button>
-</form>
+<div class="dashboard">
 
-<h2>Assigned Apartment</h2>
+  <!-- Header -->
+  <div class="dashboard-header">
+      <i class="fa-solid fa-user-shield"></i>
+      <h1>Caretaker Dashboard</h1>
+  </div>
 
-<ul>
-  {% for apartment in apartments %}
-  <li>
-    <strong>{{ apartment.name }}</strong><br />
-    Location: {{ apartment.location }}
-    <a href="{% url 'apartment_units' apartment.id %}"> View Units </a>
-  </li>
-  {% empty %}
-  <li>No apartments assigned to you.</li>
-  {% endfor %}
-</ul>
+    <!-- Assigned Apartments -->
+  <div class="section">
+      <div class="section-title">
+          <i class="fa-solid fa-building"></i>
+          <span>Assigned Apartments</span>
+      </div>
 
-<h2>Unpaid Tenants (Current Month)</h2>
+      <div class="apartments">
+        {% for apartment in apartments %}
+          <div class="apartment-badge">
+              <i class="fa-solid fa-city"></i>
 
-<ul>
-  {% for record in unpaid_rent_records %}
-  <li>
-    <strong>{{ record.tenancy.tenant.full_name }}</strong><br>
-    Apartment: {{ record.tenancy.unit.apartment.name }} |
-    Unit: {{ record.tenancy.unit.unit_number }} <br>
-    Balance: {{ record.balance }}
-    <a href="{% url 'rent_record_list' record.tenancy.id %}">
-      View Rent Records
-    </a>
-  </li>
-  {% empty %}
-  <li>All tenants are fully paid</li>
-  {% endfor %}
-</ul>
+              <div class="apartment-info">
+                  <span class="apartment-name">{{ apartment.name }}</span>
+                  <span class="apartment-location">
+                      <i class="fa-solid fa-location-dot"></i>
+                      {{ apartment.location }}
+                  </span>
+              </div>
+
+              <a href="{% url 'apartment_units' apartment.id %}" class="view-units-link">
+                  <i class="fa-solid fa-door-open"></i>
+                  View Units
+              </a>
+          </div>
+          {% empty %}
+          <div class="section">
+            <div class="no-balance">
+                <i class="fa-solid fa-circle-check"></i>
+                <strong>No apartments assigned to you.</strong>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+  </div>
+
+  <!-- Unpaid Tenants -->
+  <div class="section">
+      <div class="section-title">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Tenants With Outstanding Balances</span>
+      </div>
+
+      <div class="tenant-grid">
+
+          <!-- Tenant Card -->
+          <div class="tenant-card">
+            {% for record in unpaid_rent_records %}
+              <div class="tenant-name">{{ record.tenancy.tenant.full_name }}</div>
+
+              <div class="tenant-detail">
+                  <i class="fa-solid fa-building"></i>
+                  Apartment: {{ record.tenancy.unit.apartment.name }}
+              </div>
+
+              <div class="tenant-detail">
+                  <i class="fa-solid fa-door-open"></i>
+                  Unit: {{ record.tenancy.unit.unit_number }}
+              </div>
+
+              <div class="balance">
+                  Balance: {{ record.balance }}
+              </div>
+
+              <div class="tenant-action">
+                  <a href="{% url 'rent_record_list' record.tenancy.id %}">
+                      <i class="fa-solid fa-file-invoice"></i>
+                      View Rent Records
+                  </a>
+              </div>
+              {% empty %}
+              <div class="section">
+                <div class="no-balance">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <strong>All tenants in your assigned apartments have fully paid their rent 🎉</strong>
+                </div>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
 {% endblock %}

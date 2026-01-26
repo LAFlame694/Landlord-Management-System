@@ -1,32 +1,43 @@
-<h2>Record Payments</h2>
+{% extends "base.html" %}
 
-<p>
-    Tenant: {{ rent_record.tenancy.tenant.full_name }} <br>
-    Month: {{ rent_record.month }}/{{ rent_record.year }} <br>
-    Rent: {{ rent_record.rent_amount }} <br>
-    Paid: {{ rent_record.total_paid }} <br>
-    Balance: {{ rent_record.balance }}
-</p>
+{% block title %}Caretaker Dashboard{% endblock %}
 
-{% if error %}
-<p style="color: red;">{{ error }}</p>
-{% endif %}
-
-<form method="post">
-    {% csrf_token %}
-
-    <label>Amount</label><br>
-    <input type="number" step="0.01" name="amount" required><br><br>
-
-    <label>Payment Method</label> <br>
-    <select name="payment_method">
-        <option value="CASH">Cash</option>
-        <option value="MPESA">M-Pesa</option>
-        <option value="BANK">Bank</option>
-    </select><br><br>
-
-    <label>Reference (optional)</label><br>
-    <input type="text" name="reference"><br><br>
-
-    <button type="submit">Record Payment</button>
+{% block content %}
+<h1>Caretaker Dashboard</h1>
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Logout</button>
 </form>
+
+<h2>Assigned Apartment</h2>
+
+<ul>
+  {% for apartment in apartments %}
+  <li>
+    <strong>{{ apartment.name }}</strong><br />
+    Location: {{ apartment.location }}
+    <a href="{% url 'apartment_units' apartment.id %}"> View Units </a>
+  </li>
+  {% empty %}
+  <li>No apartments assigned to you.</li>
+  {% endfor %}
+</ul>
+
+<h2>Unpaid Tenants (Current Month)</h2>
+
+<ul>
+  {% for record in unpaid_rent_records %}
+  <li>
+    <strong>{{ record.tenancy.tenant.full_name }}</strong><br>
+    Apartment: {{ record.tenancy.unit.apartment.name }} |
+    Unit: {{ record.tenancy.unit.unit_number }} <br>
+    Balance: {{ record.balance }}
+    <a href="{% url 'rent_record_list' record.tenancy.id %}">
+      View Rent Records
+    </a>
+  </li>
+  {% empty %}
+  <li>All tenants are fully paid</li>
+  {% endfor %}
+</ul>
+{% endblock %}

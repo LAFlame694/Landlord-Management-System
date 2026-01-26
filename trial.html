@@ -2,92 +2,132 @@
 
 {% load static %}
 
-<head>
-    {% block extra_css %}
-    <!-- Font Awesome -->
+<title>Caretaker Dashboard</title>
+
+{% block extra_css %}
+ <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'payments/css/record_payment.css' %}">
-    {% endblock %}
-</head>
+    <link rel="stylesheet" href="{% static 'dashboards/css/caretaker_dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="dashboard">
 
     <!-- Header -->
-    <div class="card-header">
-        <i class="fa-solid fa-file-invoice-dollar"></i>
-        <h1>Record Payment</h1>
+    <div class="dashboard-header">
+        <i class="fa-solid fa-user-shield"></i>
+        <h1>Caretaker Dashboard</h1>
     </div>
 
-    <!-- Info Section -->
-    <div class="info-grid">
-        <div class="info-box">
-            <span>Tenant</span>
-            <strong>John Doe</strong>
+    <!-- Assigned Apartments -->
+<div class="section">
+    <div class="section-title">
+        <i class="fa-solid fa-building"></i>
+        <span>Assigned Apartments</span>
+    </div>
+
+    <div class="apartments">
+        <div class="apartment-badge">
+            <i class="fa-solid fa-city"></i>
+            <span>Sunrise Apartments</span>
+            <a href="#" class="view-units-link">
+                <i class="fa-solid fa-door-open"></i>
+                View Units
+            </a>
         </div>
 
-        <div class="info-box">
-            <span>Month</span>
-            <strong>January 2026</strong>
+        <div class="apartment-badge">
+            <i class="fa-solid fa-city"></i>
+            <span>Greenview Court</span>
+            <a href="#" class="view-units-link">
+                <i class="fa-solid fa-door-open"></i>
+                View Units
+            </a>
         </div>
 
-        <div class="info-box">
-            <span>Rent</span>
-            <strong>KES 25,000</strong>
+        <div class="apartment-badge">
+            <i class="fa-solid fa-city"></i>
+            <span>Palm Heights</span>
+            <a href="#" class="view-units-link">
+                <i class="fa-solid fa-door-open"></i>
+                View Units
+            </a>
+        </div>
+    </div>
+</div>
+
+    <!-- Unpaid Tenants -->
+    <div class="section">
+        <div class="section-title">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Tenants With Outstanding Balances</span>
         </div>
 
-        <div class="info-box">
-            <span>Paid</span>
-            <strong>KES 15,000</strong>
-        </div>
+        <div class="tenant-grid">
 
-        <div class="info-box">
-            <span>Balance</span>
-            <strong>KES 10,000</strong>
+            <!-- Tenant Card -->
+            <div class="tenant-card">
+                <div class="tenant-name">Jane Wanjiku</div>
+
+                <div class="tenant-detail">
+                    <i class="fa-solid fa-building"></i>
+                    Apartment: Sunrise Apartments
+                </div>
+
+                <div class="tenant-detail">
+                    <i class="fa-solid fa-door-open"></i>
+                    Unit: B12
+                </div>
+
+                <div class="balance">
+                    Balance: KES 8,000
+                </div>
+
+                <div class="tenant-action">
+                    <a href="#">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        View Rent Records
+                    </a>
+                </div>
+            </div>
+
+            <!-- Another Tenant -->
+            <div class="tenant-card">
+                <div class="tenant-name">Peter Mwangi</div>
+
+                <div class="tenant-detail">
+                    <i class="fa-solid fa-building"></i>
+                    Apartment: Greenview Court
+                </div>
+
+                <div class="tenant-detail">
+                    <i class="fa-solid fa-door-open"></i>
+                    Unit: A03
+                </div>
+
+                <div class="balance">
+                    Balance: KES 15,500
+                </div>
+
+                <div class="tenant-action">
+                    <a href="#">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        View Rent Records
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Form -->
-    <form class="form-section">
-
-        <div class="form-group">
-            <label>Amount Paid</label>
-            <div class="input-field">
-                <i class="fa-solid fa-money-bill-wave"></i>
-                <input type="number" placeholder="Enter amount paid">
-            </div>
+    <!-- No Outstanding Balances -->
+    <div class="section">
+        <div class="no-balance">
+            <i class="fa-solid fa-circle-check"></i>
+            <strong>All tenants in your assigned apartments have fully paid their rent 🎉</strong>
         </div>
-
-        <div class="form-group">
-            <label>Payment Method</label>
-            <div class="input-field">
-                <i class="fa-solid fa-credit-card"></i>
-                <select>
-                    <option value="">Select payment method</option>
-                    <option>Cash</option>
-                    <option>Mpesa</option>
-                    <option>Bank</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Reference</label>
-            <div class="input-field">
-                <i class="fa-solid fa-hashtag"></i>
-                <input type="text" placeholder="Transaction or reference number">
-            </div>
-        </div>
-
-        <div class="actions">
-            <button type="submit" class="btn-primary">
-                <i class="fa-solid fa-check"></i>
-                Record Payment
-            </button>
-        </div>
-
-    </form>
+    </div>
 
 </div>
 {% endblock %}
