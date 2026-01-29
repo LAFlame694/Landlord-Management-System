@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:apartment_id>/units/add/', views.unit_create, name='unit_create'),
     path('units/<int:pk>/edit/', views.unit_edit, name='unit_edit'),
     path('vacate-tenant/<int:tenancy_id>/', views.vacate_tenant, name='vacate_tenant'),
-    path('units/<unit_id>/assign-tenant', views.assign_tenant, name='assign_tenant')
+    path('units/<unit_id>/assign-tenant', views.assign_tenant, name='assign_tenant'),
+    path('apartments/tenancies/<int:pk>/', views.tenancy_detail, name='tenancy_detail'),
 ]

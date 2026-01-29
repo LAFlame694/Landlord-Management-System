@@ -53,7 +53,7 @@
                 <a href="{% url 'unit_edit' unit.id %}"
                        class="btn btn-edit">
                         Edit Unit
-                    </a>
+                </a>
 
                 {% if unit.is_occupied and unit.active_tenancy %}
                     <a href="{% url 'rent_record_list' unit.active_tenancy.id %}"
@@ -64,6 +64,11 @@
                     <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}"
                        class="btn btn-vacate">
                         Vacate
+                    </a>
+
+                    <a href="{% url 'tenancy_detail' unit.active_tenancy.id %}"
+                       class="btn btn-edit">
+                        View Tenant
                     </a>
 
                 {% else %}

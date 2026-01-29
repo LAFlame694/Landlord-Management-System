@@ -1,14 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.utils import landlord_required, caretaker_required
-from .models import Apartment, Unit, Tenancy, Tenant
-from .forms import ApartmentForm, UnitForm, TenantForm, TenantAssignmentForm
+from .models import Apartment, Unit, Tenancy
+from .forms import ApartmentForm, UnitForm, TenantForm, TenancyForm
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Count
 from django.contrib import messages
 
 # Create your views here.
+@login_required
+def tenancy_detail(request, pk):
+    tenancy = get_object_or_404(
+        Tenancy,
+        pk=pk,
+        unit__apartment__landlord=request.user
+    )
+
+    tenant = tenancy.tenant
+
+    if request.method == 'POST':
+        tenant_form = TenantForm(request.POST, instance=tenant)
+        tenancy_form = TenancyForm(request.POST, instance=tenancy)
+
+        if tenant_form.is_valid() and tenancy_form.is_valid():
+            tenant_form.save()
+            tenancy_form.save()
+            return redirect('tenancy_detail', pk=tenancy.id)
+    
+    else:
+        tenant_form = TenantForm(instance=tenant)
+        tenancy_form = TenancyForm(instance=tenancy)
+    
+    return render(request, 'properties/tenancy_detail.html', {
+        'tenant_form': tenant_form,
+        'tenancy_form': tenancy_form,
+        'tenancy': tenancy
+    })
+
 @login_required
 def assign_tenant(request, unit_id):
 
@@ -48,6 +77,7 @@ def assign_tenant(request, unit_id):
 
             unit.status = Unit.OCCUPIED
             unit.save()
+            messages.success(request, "Tenant assigned successfully.")
 
             return redirect('apartment_units', apartment_id=apartment.id)
     

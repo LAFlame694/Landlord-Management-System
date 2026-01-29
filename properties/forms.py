@@ -20,10 +20,38 @@ class UnitForm(forms.ModelForm):
             'rent': forms.NumberInput(attrs={'placeholder': 'e.g. 15000'}),
         }
 
+class TenancyForm(forms.ModelForm):
+    class Meta:
+        model = Tenancy
+        fields = [
+            'start_date',
+            'end_date',
+        ]
+
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type':'date'}),
+            'end_date': forms.DateInput(attrs={'type':'date'}),
+        }
+
 class TenantForm(forms.ModelForm):
     class Meta:
         model = Tenant
         fields = ['full_name', 'phone', 'email', 'national_id']
+
+        widgets = {
+            'full_name': forms.TextInput(
+                attrs={'placeholder': 'Full Name'}
+            ),
+            'phone': forms.TextInput(
+                attrs={'placeholder': 'Phone Number'}
+            ),
+            'email': forms.EmailInput(
+                attrs={'placeholder': 'Email Address'}
+            ),
+            'national_id': forms.TextInput(
+                attrs={'placeholder': 'National ID'}
+            ),
+        }
 
 class TenantAssignmentForm(forms.ModelForm):
     class Meta:

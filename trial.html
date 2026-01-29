@@ -1,69 +1,186 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenant Details</title>
 
-{% load static %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-<title>Add Unit</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
 
-{% block extra_css %}
-<!-- Font Awesome -->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
+        .page-wrapper {
+            max-width: 900px;
+            margin: auto;
+        }
 
-<!-- CSS -->
-<link rel="stylesheet" href="{% static 'dashboards/css/caretaker_dashboard.css' %}">
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 25px;
+        }
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-{% endblock %}
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
 
-{% block content %}
+        .card-header h2 {
+            font-size: 22px;
+            margin: 0;
+            color: #333;
+        }
+
+        .actions a {
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-back {
+            background: #e5e7eb;
+            color: #333;
+        }
+
+        .btn-edit {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            row-gap: 16px;
+            column-gap: 20px;
+        }
+
+        .label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .value {
+            color: #111827;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-ended {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+
 <div class="page-wrapper">
-    <div class="form-card">
-        <div class="form-header">
+
+    <!-- Page Header -->
+    <div class="card">
+        <div class="card-header">
             <h2>
-                <i class="fa-solid fa-building"></i>
-                Add Unit to Apartment Name
+                <i class="fa-solid fa-user"></i>
+                Tenant & Tenancy Details
             </h2>
+
+            <div class="actions">
+                <a href="#" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back
+                </a>
+                <a href="#" class="btn-edit">
+                    <i class="fa-solid fa-pen"></i>
+                    Edit
+                </a>
+            </div>
         </div>
 
-        <form>
-            <div class="form-group">
-                <label>
-                    <i class="fa-solid fa-door-open"></i>
-                    Unit Number
-                </label>
-                <input type="text" placeholder="e.g. A12">
-            </div>
+        <!-- Tenant Section -->
+        <div class="section-title">
+            <i class="fa-solid fa-id-card"></i>
+            Tenant Information
+        </div>
 
-            <div class="form-group">
-                <label>
-                    <i class="fa-solid fa-coins"></i>
-                    Rent Amount
-                </label>
-                <input type="number" placeholder="e.g. 15000">
-            </div>
+        <div class="details-grid">
+            <div class="label">Full Name</div>
+            <div class="value">John Doe</div>
 
-            <div class="form-group full-width">
-                <label>
-                    <i class="fa-solid fa-circle-check"></i>
-                    Status
-                </label>
-                <select>
-                    <option value="">Select status</option>
-                    <option value="vacant">Vacant</option>
-                    <option value="occupied">Occupied</option>
-                </select>
-            </div>
+            <div class="label">Phone</div>
+            <div class="value">0712 345 678</div>
 
-            <div class="form-actions">
-                <button type="submit" class="save-btn">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Save Unit
-                </button>
-            </div>
-        </form>
+            <div class="label">Email</div>
+            <div class="value">john@example.com</div>
+
+            <div class="label">National ID</div>
+            <div class="value">12345678</div>
+        </div>
     </div>
+
+    <!-- Tenancy Section -->
+    <div class="card">
+        <div class="section-title">
+            <i class="fa-solid fa-house"></i>
+            Tenancy Information
+        </div>
+
+        <div class="details-grid">
+            <div class="label">Unit</div>
+            <div class="value">Apartment A — Unit 12</div>
+
+            <div class="label">Rent Amount</div>
+            <div class="value">KES 15,000</div>
+
+            <div class="label">Start Date</div>
+            <div class="value">01 Jan 2025</div>
+
+            <div class="label">End Date</div>
+            <div class="value">—</div>
+
+            <div class="label">Status</div>
+            <div class="value">
+                <span class="badge badge-active">Active</span>
+            </div>
+        </div>
+    </div>
+
 </div>
-{% endblock %}
+
+</body>
+</html>
