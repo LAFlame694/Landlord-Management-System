@@ -1,12 +1,12 @@
 {% extends "base.html" %}
+
 {% load static %}
 
-<head>
-    <title>Units</title>
-    {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'properties/css/unit_list.css' %}">
-    {% endblock %}
-</head>
+<title>Units</title>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'properties/css/unit_list.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container">

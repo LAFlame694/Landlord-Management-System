@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% load static %}
+    <title>Edit Tenant & Tenancy</title>
+
+    {% block extra_css %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'properties/css/tenancy_form.css' %}">
+    {% endblock %}
+
+{% block content %}
+<div class="page-container">
+
+    <div class="form-card">
+
+        <div class="form-header">
+            <h2>
+                <i class="fa-solid fa-user-pen"></i>
+                Edit Tenant & Tenancy
+            </h2>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Tenant Info -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fa-solid fa-user"></i>
+                    Tenant Information
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-id-card"></i>
+                            {{ tenant_form.full_name }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            {{ tenant_form.phone }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            {{ tenant_form.email }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>National ID</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-id-badge"></i>
+                            {{ tenant_form.national_id }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tenancy Info -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Tenancy Information
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            {{ tenancy_form.start_date }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                            {{ tenancy_form.end_date }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-cancel">
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

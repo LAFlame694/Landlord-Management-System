@@ -1,61 +1,84 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+<title>Tenant Details</title>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'properties/css/tenancy_detail.css' %}">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+{% endblock %}
+
 {% block content %}
+<div class="page-wrapper">
 
-<h2>Tenant & Tenancy Details</h2>
+    <!-- Page Header -->
+    <div class="card">
+        <div class="card-header">
+            <h2>
+                <i class="fa-solid fa-user"></i>
+                Tenant & Tenancy Details
+            </h2>
 
-<form method="post">
-    {% csrf_token %}
-
-    <fieldset>
-        <legend>Tenant Details</legend>
-
-        <div>
-            <label>Full Name</label><br>
-            {{ tenant_form.full_name }}
+            <div class="actions">
+                <a href="#" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back
+                </a>
+                <a href="{% url 'tenancy_edit' tenancy.id %}" class="btn-edit">
+                    <i class="fa-solid fa-pen"></i>
+                    Edit
+                </a>
+            </div>
         </div>
 
-        <div>
-            <label>Phone</label><br>
-            {{ tenant_form.phone }}
+        <!-- Tenant Section -->
+        <div class="section-title">
+            <i class="fa-solid fa-id-card"></i>
+            Tenant Information
         </div>
 
-        <div>
-            <label>Email</label><br>
-            {{ tenant_form.email }}
+        <div class="details-grid">
+            <div class="label">Full Name</div>
+            <div class="value">{{ tenancy.tenant.full_name }}</div>
+
+            <div class="label">Phone</div>
+            <div class="value">{{ tenancy.tenant.phone }}</div>
+
+            <div class="label">Email</div>
+            <div class="value">{{ tenancy.tenant.email }}</div>
+
+            <div class="label">National ID</div>
+            <div class="value">{{ tenancy.tenant.national_id }}</div>
+        </div>
+    </div>
+
+    <!-- Tenancy Section -->
+    <div class="card">
+        <div class="section-title">
+            <i class="fa-solid fa-house"></i>
+            Tenancy Information
         </div>
 
-        <div>
-            <label>National ID</label><br>
-            {{ tenant_form.national_id }}
+        <div class="details-grid">
+
+            <div class="label">Start Date</div>
+            <div class="value">{{ tenancy.start_date|date:"d M Y" }}</div>
+
+            <div class="label">End Date</div>
+            {% if tenancy.end_date %}
+            <div class="value">{{ tenancy.end_date|date:"d M Y" }}</div>
+            {% else %}
+            <div class="value">—</div>
+            {% endif %}
+
+            <div class="label">Status</div>
+            <div class="value">
+                <span class="badge badge-active">Active</span>
+            </div>
         </div>
-    </fieldset>
+    </div>
 
-    <br>
-
-    <fieldset>
-        <legend>Tenancy Details</legend>
-
-        <div>
-            <label>Unit</label><br>
-            {{ tenancy_form.unit }}
-        </div>
-
-        <div>
-            <label>Start Date</label><br>
-            {{ tenancy_form.start_date }}
-        </div>
-
-        <div>
-            <label>End Date</label><br>
-            {{ tenancy_form.end_date }}
-        </div>
-    </fieldset>
-
-    <br>
-
-    <button type="submit">
-        Save Changes
-    </button>
-</form>
+</div>
 {% endblock %}

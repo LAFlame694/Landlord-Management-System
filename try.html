@@ -1,7 +1,56 @@
-<h2>Add Unit to {{ apartment.name }}</h2>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Tenant & Tenancy Details</h2>
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
+
+    <fieldset>
+        <legend>Tenant Details</legend>
+
+        <div>
+            <label>Full Name</label><br>
+            {{ tenant_form.full_name }}
+        </div>
+
+        <div>
+            <label>Phone</label><br>
+            {{ tenant_form.phone }}
+        </div>
+
+        <div>
+            <label>Email</label><br>
+            {{ tenant_form.email }}
+        </div>
+
+        <div>
+            <label>National ID</label><br>
+            {{ tenant_form.national_id }}
+        </div>
+    </fieldset>
+
+    <br>
+
+    <fieldset>
+        <legend>Tenancy Details</legend>
+
+        <div>
+            <label>Start Date</label><br>
+            {{ tenancy_form.start_date }}
+        </div>
+
+        <div>
+            <label>End Date</label><br>
+            {{ tenancy_form.end_date }}
+        </div>
+    </fieldset>
+
+    <br>
+
+    <button type="submit">
+        Save Changes
+    </button>
 </form>
+{% endblock %}

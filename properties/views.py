@@ -17,6 +17,18 @@ def tenancy_detail(request, pk):
         unit__apartment__landlord=request.user
     )
 
+    return render(request, 'properties/tenancy_detail.html', {
+        'tenancy': tenancy
+    })
+
+@login_required
+def tenancy_edit(request, pk):
+    tenancy = get_object_or_404(
+        Tenancy,
+        pk=pk,
+        unit__apartment__landlord=request.user
+    )
+
     tenant = tenancy.tenant
 
     if request.method == 'POST':
@@ -26,13 +38,14 @@ def tenancy_detail(request, pk):
         if tenant_form.is_valid() and tenancy_form.is_valid():
             tenant_form.save()
             tenancy_form.save()
+            messages.success(request, "Tenant Updated Successfully")
             return redirect('tenancy_detail', pk=tenancy.id)
     
     else:
         tenant_form = TenantForm(instance=tenant)
         tenancy_form = TenancyForm(instance=tenancy)
     
-    return render(request, 'properties/tenancy_detail.html', {
+    return render(request, 'properties/tenancy_form.html', {
         'tenant_form': tenant_form,
         'tenancy_form': tenancy_form,
         'tenancy': tenancy
