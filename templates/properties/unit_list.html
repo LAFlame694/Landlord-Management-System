@@ -50,10 +50,12 @@
             </div>
 
             <div class="unit-actions">
+                {% if user.is_landlord %}
                 <a href="{% url 'unit_edit' unit.id %}"
                        class="btn btn-edit">
                         Edit Unit
                 </a>
+                {% endif %}
 
                 {% if unit.is_occupied and unit.active_tenancy %}
                     <a href="{% url 'rent_record_list' unit.active_tenancy.id %}"

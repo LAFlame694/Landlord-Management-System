@@ -7,15 +7,27 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Count
 from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 @login_required
 def tenancy_detail(request, pk):
-    tenancy = get_object_or_404(
-        Tenancy,
-        pk=pk,
-        unit__apartment__landlord=request.user
-    )
+    if request.user.is_landlord():
+        tenancy = get_object_or_404(
+            Tenancy,
+            pk=pk,
+            unit__apartment__landlord=request.user
+        )
+
+    elif request.user.is_caretaker():
+        tenancy = get_object_or_404(
+            Tenancy,
+            pk=pk,
+            unit__apartment__caretakers=request.user
+        )
+    
+    else:
+        return HttpResponseForbidden("Not allowed")
 
     return render(request, 'properties/tenancy_detail.html', {
         'tenancy': tenancy
@@ -23,11 +35,22 @@ def tenancy_detail(request, pk):
 
 @login_required
 def tenancy_edit(request, pk):
-    tenancy = get_object_or_404(
-        Tenancy,
-        pk=pk,
-        unit__apartment__landlord=request.user
-    )
+    if request.user.is_landlord():
+        tenancy = get_object_or_404(
+            Tenancy,
+            pk=pk,
+            unit__apartment__landlord=request.user
+        )
+    
+    elif request.user.is_caretaker():
+        tenancy = get_object_or_404(
+            Tenancy,
+            pk=pk,
+            unit__apartment__caretakers=request.user
+        )
+    
+    else:
+        return HttpResponseForbidden("Not allowed")
 
     tenant = tenancy.tenant
 

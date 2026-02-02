@@ -19,6 +19,12 @@
     <form method="post">
         {% csrf_token %}
 
+        {% if form.errors %}
+        <div style="color: red;">
+            {{ form.errors }}
+        </div>
+        {% endif %}
+
         <div class="input-icon">
             <i class="fas fa-user"></i>
             {{ form.username }}

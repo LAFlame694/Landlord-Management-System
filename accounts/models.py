@@ -16,8 +16,13 @@ class User(AbstractUser):
         choices=ROLE_CHOICES
     )
 
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
     def is_landlord(self):
         return self.role == self.LANDLORD
-    
+
     def is_caretaker(self):
         return self.role == self.CARETAKER

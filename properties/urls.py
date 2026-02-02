@@ -11,6 +11,6 @@ urlpatterns = [
     path('units/<int:pk>/edit/', views.unit_edit, name='unit_edit'),
     path('vacate-tenant/<int:tenancy_id>/', views.vacate_tenant, name='vacate_tenant'),
     path('units/<unit_id>/assign-tenant', views.assign_tenant, name='assign_tenant'),
-    path('apartments/tenancies/<int:pk>/', views.tenancy_detail, name='tenancy_detail'),
-    path('apartments/tenancies/<int:pk>/edit', views.tenancy_edit, name='tenancy_edit')
+    path('tenancies/<int:pk>/', views.tenancy_detail, name='tenancy_detail'),
+    path('tenancies/<int:pk>/edit', views.tenancy_edit, name='tenancy_edit')
 ]
