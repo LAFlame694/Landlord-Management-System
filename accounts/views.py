@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
+from .forms import EmailAuthenticationForm
 
 # Create your views here.
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
+    authentication_form = EmailAuthenticationForm
 
     def get_success_url(self):
         user = self.request.user

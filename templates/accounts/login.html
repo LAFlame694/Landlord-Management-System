@@ -35,7 +35,7 @@
             {{ form.password }}
         </div>
 
-        <a class="forgot-password" href="#">Forgot Password?</a>
+        <a class="forgot-password" href="{% url 'password_reset' %}">Forgot Password?</a>
 
         <button type="submit">Login</button>
     </form>
