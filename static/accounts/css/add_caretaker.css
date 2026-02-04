@@ -11,12 +11,19 @@ body {
 }
 
 .form-wrapper {
+    text-align: center;
     width: 680px;
     margin: 0 auto;
     background: #ffffff;
     border-radius: 14px;
     padding: 2rem 1.5rem;
     box-shadow: 0 25px 40px rgba(0, 0, 0, 0.15);
+}
+
+.form-wrapper i {
+    font-size: 36px;
+    color: black;
+    margin-bottom: 8px;
 }
 
 .form-wrapper h2 {
@@ -72,6 +79,11 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.25s ease;
+}
+
+.submit-btn i {
+    font-size: 16px;
+    color: #ffffff;
 }
 
 .submit-btn:hover {
