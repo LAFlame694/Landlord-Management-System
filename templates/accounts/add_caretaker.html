@@ -13,33 +13,43 @@
 <div class="form-wrapper">
     <h2>Add Caretaker</h2>
 
-    <form>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Email -->
         <div class="form-group">
             <div class="input-wrapper">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="email" placeholder="Email">
+                {{ form.email }}
             </div>
+            {{ form.email.errors }}
         </div>
 
+        <!-- Username -->
         <div class="form-group">
             <div class="input-wrapper">
                 <i class="fa-solid fa-user"></i>
-                <input type="text" placeholder="Username">
+                {{ form.username }}
             </div>
+            {{ form.username.errors }}
         </div>
 
+        <!-- Password -->
         <div class="form-group">
             <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
-                <input type="password" placeholder="Password">
+                {{ form.password1 }}
             </div>
+            {{ form.password1.errors }}
         </div>
 
+        <!-- Confirm Password -->
         <div class="form-group">
             <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
-                <input type="password" placeholder="Confirm Password">
+               {{ form.password2 }}
             </div>
+            {{ form.password2.errors }}
         </div>
 
         <button type="submit" class="submit-btn">

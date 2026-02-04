@@ -1,10 +1,12 @@
 from django.urls import path
 from .views import CustomLoginView, CustomLogoutView
 from django.contrib.auth import views as auth_views
+from . import views
 
 urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('add-caretaker/', views.add_caretaker, name='add_caretaker'),
 
     # password reset urls
     path(
