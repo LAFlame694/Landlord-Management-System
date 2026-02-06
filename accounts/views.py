@@ -4,11 +4,28 @@ from django.urls import reverse_lazy
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from .forms import CaretakerCreationForm
+from .forms import CaretakerCreationForm, UserProfileForm
 from .models import User
 from django.contrib import messages
 
 # Create your views here.
+@login_required
+def my_profile(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User updated successfully')
+            return redirect('my_profile')
+    else:
+        form = UserProfileForm(instance=user)
+    
+    return render(request, 'accounts/my_profile.html', {
+        'form': form
+    })
+
 @login_required
 def add_caretaker(request):
     if not request.user.is_landlord():

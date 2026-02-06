@@ -15,6 +15,13 @@ header a {
     margin-right: 15px;
     text-decoration: none;
     font-weight: bold;
+    transition: 0.3s ease;
+}
+
+header a:hover {
+    background-color: dodgerblue;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .container {

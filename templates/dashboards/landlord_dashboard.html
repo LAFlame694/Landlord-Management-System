@@ -13,7 +13,7 @@
 
     <!-- Header -->
     <div class="dashboard-header">
-        <h1>Landlord Dashboard</h1>
+        <h1>Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
         <a href="{% url 'apartment_list' %}">My Apartments</a>
         <a href="{% url 'add_caretaker' %}">Add Caretaker</a>
     </div>

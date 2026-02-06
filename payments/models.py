@@ -1,6 +1,7 @@
 from django.db import models
 from properties.models import Tenancy
 from django.core.validators import MinValueValidator, MaxValueValidator
+import calendar
 
 # Create your models here.
 class RentRecord(models.Model):
@@ -48,6 +49,10 @@ class RentRecord(models.Model):
             models.Index(fields=['tenancy', 'year', 'month']),
             models.Index(fields=['status']),
         ]
+    
+    @property
+    def month_name(self):
+        return calendar.month_name[self.month]
 
     @property
     def balance(self):

@@ -9,10 +9,17 @@ import calendar
 from calendar import month_name
 
 # Create your views here.
-import calendar
-from datetime import date
-from django.db.models import Sum
-from django.contrib.auth.decorators import login_required
+@login_required
+def home_redirect(request):
+    user = request.user
+
+    if user.is_landlord():
+        return redirect('landlord_dashboard')
+    elif user.is_caretaker():
+        return redirect('caretaker_dashboard')
+    
+    # fallback
+    return redirect('accounts:login')
 
 @login_required
 @landlord_required

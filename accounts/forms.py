@@ -1,7 +1,18 @@
-from tkinter import W, Widget
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from .models import User
+
+# create your forms here.
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+        }
 
 class EmailAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
