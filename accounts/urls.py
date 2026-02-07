@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('add-caretaker/', views.add_caretaker, name='add_caretaker'),
     path('profile/', views.my_profile, name='my_profile'),
+    path('update_password/', views.update_password, name='update_password'),
 
     # password reset urls
     path(

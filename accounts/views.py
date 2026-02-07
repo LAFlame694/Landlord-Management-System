@@ -4,11 +4,33 @@ from django.urls import reverse_lazy
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from .forms import CaretakerCreationForm, UserProfileForm
+from .forms import CaretakerCreationForm, UserProfileForm, ChangePasswordForm
 from .models import User
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
+@login_required
+def update_password(request):
+    current_user = request.user
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(current_user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your password has being updated successfully")
+            update_session_auth_hash(request, current_user)
+            return redirect('my_profile')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+                return redirect('update_password')
+    else:
+        form = ChangePasswordForm(current_user)
+        return render(request, "accounts/update_password.html", {
+            'form': form
+        })
+
 @login_required
 def my_profile(request):
     user = request.user

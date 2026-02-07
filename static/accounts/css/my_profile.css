@@ -108,6 +108,18 @@ body {
     transition: color 0.2s ease;
 }
 
+.update-link {
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    background-color: #0f766e;
+    padding: 0.6rem 1.2rem;
+    border-radius: 9px;
+}
+
 .back-link i {
     margin-right: 6px;
 }
