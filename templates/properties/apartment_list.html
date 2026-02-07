@@ -17,6 +17,17 @@
     <div class="page-header">
         <h1>My Apartments</h1>
 
+        <form method="get" class="search-form">
+            <input 
+                type="text"
+                name="q"
+                placeholder="Search by apartment name or location..."
+                value="{{ query }}"
+                class="search-input"
+            >
+            <button type="submit" class="btn-search">Search</button>
+        </form>
+
         <div class="header-actions">
             <a href="{% url 'apartment_create' %}" class="btn btn-add">Add Apartment</a>
             <a href="{% url 'landlord_dashboard' %}" class="btn btn-back">Back</a>
@@ -40,7 +51,13 @@
         </div>
         {% empty %}
         <div class="apartment-card">
-            <h1>No apartments yet.</h1>
+            {% if query %}
+                <h3>No results found</h3>
+                <p>No apartments match "{{ query }}".</p>
+            {% else %}
+                <h3>No apartments yet</h3>
+                <p>Add your first apartment to get started.</p>
+            {% endif %}
         </div>
         {% endfor %}
 

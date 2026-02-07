@@ -1,158 +1,190 @@
 :root {
-        --primary: #2563eb;
-        --secondary: #0f766e;
-        --success: #15803d;
-        --warning: #b45309;
-        --danger: #b91c1c;
-        --bg: #f4f6f9;
-        --card-bg: #ffffff;
-        --text-dark: #1f2937;
-        --text-muted: #6b7280;
-    }
+    --primary: #2563eb;
+    --secondary: #0f766e;
+    --success: #15803d;
+    --warning: #b45309;
+    --danger: #b91c1c;
+    --bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+}
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    body {
-        background-color: var(--bg);
-        color: var(--text-dark);
-    }
+body {
+    background-color: var(--bg);
+    color: var(--text-dark);
+}
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 1.5rem;
-    }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
 
-    /* Header */
+/* Header */
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    border: 1px;
+    min-width: 260px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+    outline: dodgerblue;
+    border-color: var(--primary);
+}
+
+.btn-search {
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    background-color: #0f766e;
+    padding: 0.6rem 1.2rem;
+    border-radius: 9px;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+    display: inline-block;
+}
+
+.btn-add {
+    background-color: var(--success);
+}
+
+.btn-add:hover {
+    background-color: #166534;
+}
+
+.btn-back {
+    background-color: var(--primary);
+}
+
+.btn-back:hover {
+    background-color: #1e40af;
+}
+
+/* Apartments Grid */
+.apartments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.apartment-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.apartment-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    background-color: var(--secondary);
+}
+
+.apartment-card h3 {
+    margin-bottom: 0.6rem;
+    font-size: 1.3rem;
+}
+
+.apartment-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+
+/* Card Actions */
+.card-actions {
+    margin-top: 1.2rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.btn-edit {
+    background-color: var(--warning);
+}
+
+.btn-edit:hover {
+    background-color: #92400e;
+}
+
+.btn-view {
+    background-color: var(--secondary);
+}
+
+.btn-view:hover {
+    background-color: #115e59;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
     .page-header {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .page-header h1 {
-        font-size: 2rem;
-        color: var(--primary);
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .header-actions {
-        display: flex;
-        gap: 0.8rem;
-        flex-wrap: wrap;
+        width: 100%;
     }
 
     .btn {
-        text-decoration: none;
-        padding: 0.6rem 1.2rem;
-        border-radius: 6px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        color: white;
-        display: inline-block;
-    }
-
-    .btn-add {
-        background-color: var(--success);
-    }
-
-    .btn-add:hover {
-        background-color: #166534;
-    }
-
-    .btn-back {
-        background-color: var(--primary);
-    }
-
-    .btn-back:hover {
-        background-color: #1e40af;
-    }
-
-    /* Apartments Grid */
-    .apartments-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .apartment-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 6px 14px rgba(0,0,0,0.06);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .apartment-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 6px;
         width: 100%;
-        background-color: var(--secondary);
+        text-align: center;
     }
 
-    .apartment-card h3 {
-        margin-bottom: 0.6rem;
-        font-size: 1.3rem;
-    }
-
-    .apartment-card p {
-        font-size: 0.95rem;
-        color: var(--text-muted);
-        margin-bottom: 0.4rem;
-    }
-
-    /* Card Actions */
     .card-actions {
-        margin-top: 1.2rem;
-        display: flex;
-        gap: 0.6rem;
-        flex-wrap: wrap;
+        flex-direction: column;
     }
-
-    .btn-edit {
-        background-color: var(--warning);
-    }
-
-    .btn-edit:hover {
-        background-color: #92400e;
-    }
-
-    .btn-view {
-        background-color: var(--secondary);
-    }
-
-    .btn-view:hover {
-        background-color: #115e59;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-        .page-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .header-actions {
-            width: 100%;
-        }
-
-        .btn {
-            width: 100%;
-            text-align: center;
-        }
-
-        .card-actions {
-            flex-direction: column;
-        }
-    }
+}

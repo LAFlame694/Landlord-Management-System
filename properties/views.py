@@ -5,7 +5,7 @@ from .models import Apartment, Unit, Tenancy
 from .forms import ApartmentForm, UnitForm, TenantForm, TenancyForm
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 
@@ -220,14 +220,21 @@ def apartment_units(request, apartment_id):
 @login_required
 @landlord_required
 def apartment_list(request):
+    query = request.GET.get('q', '')
+
     apartments = (
         Apartment.objects
         .filter(landlord=request.user)
+        .filter(
+            Q(name__icontains=query) |
+            Q(location__icontains=query)
+        )
         .annotate(total_units=Count('units'))
     )
 
     return render(request, 'properties/apartment_list.html', {
-        'apartments': apartments
+        'apartments': apartments,
+        'query': query
     })
 
 @login_required
