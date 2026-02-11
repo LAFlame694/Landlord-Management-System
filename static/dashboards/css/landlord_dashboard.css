@@ -22,7 +22,7 @@ html {
 }
 
 body {
-    background-color: var(--bg);
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
     color: var(--text-dark);
     font-size: 1rem;
 }
@@ -45,7 +45,7 @@ body {
 
 .dashboard-header h1 {
     font-size: 2rem;
-    color: var(--primary);
+    color: var(--bg);
 }
 
 .dashboard-header a {
@@ -108,6 +108,7 @@ body {
 .overview-title {
     font-size: 1.4rem;
     margin-bottom: 1.5rem;
+    color: var(--bg);
 }
 
 /* Cards Grid */

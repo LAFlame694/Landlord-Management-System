@@ -2,13 +2,11 @@
 
 {% load static %}
 
-<head>
-    <title>My Apartments</title>
-    {% block extra_css %}
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'properties/css/apartment_list.css' %}">
-    {% endblock %}
-</head>
+<title>My Apartments</title>
+{% block extra_css %}
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'properties/css/apartment_list.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -20,10 +18,12 @@
         <form method="get" class="search-form">
             <input 
                 type="text"
+                id="apartment-search"
                 name="q"
-                placeholder="Search by apartment name or location..."
+                placeholder="Search apartment name or location..."
                 value="{{ query }}"
                 class="search-input"
+                autocomplete="off"
             >
             <button type="submit" class="btn-search">Search</button>
         </form>
@@ -35,33 +35,56 @@
     </div>
 
     <!-- Apartments List -->
-    <div class="apartments-grid">
-        {% for apartment in apartments %}
-
-        <!-- Apartment Card -->
-        <div class="apartment-card">
-            <h3>{{ apartment.name }}</h3>
-            <p><strong>Location:</strong> {{ apartment.location }}</p>
-            <p><strong>Total Units:</strong> {{ apartment.total_units }}</p>
-
-            <div class="card-actions">
-                <a href="{% url 'apartment_edit' apartment.id %}" class="btn btn-edit">Edit</a>
-                <a href="{% url 'apartment_units' apartment.id %}" class="btn btn-view">View Units</a>
-            </div>
-        </div>
-        {% empty %}
-        <div class="apartment-card">
-            {% if query %}
-                <h3>No results found</h3>
-                <p>No apartments match "{{ query }}".</p>
-            {% else %}
-                <h3>No apartments yet</h3>
-                <p>Add your first apartment to get started.</p>
-            {% endif %}
-        </div>
-        {% endfor %}
-
+    <div class="apartments-grid" id="apartments-grid">
+        {% include 'properties/partials/apartment_cards.html' %}
     </div>
 
 </div>
+
+<script>
+    const searchInput = document.getElementById('apartment-search');
+    const apartmentsGrid = document.getElementById('apartments-grid');
+
+    let timeout = null;
+
+    searchInput.addEventListener('keyup', function() 
+    {
+        clearTimeout(timeout);
+        
+        timeout = setTimeout(() => {
+            const query = searchInput.value;
+
+            fetch(`?q=${encodeURIComponent(query)}&ajax=1`)
+            .then(response => response.text())
+            .then(html => {
+                apartmentsGrid.innerHTML = html;
+            });
+        }, 300); // debounce (300ms)
+    });
+</script>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {% endblock %}

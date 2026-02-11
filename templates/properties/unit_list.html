@@ -15,6 +15,17 @@
     <div class="page-header">
         <h2>Units in {{ apartment.name }}</h2>
 
+        <form method="get" class="search-form">
+            <input 
+                type="text"
+                name="q"
+                placeholder="Search unit number, tenant name..."
+                value="{{ query }}"
+                class="search-input"
+            >
+            <button type="submit" class="btn-search">Search</button>
+        </form>
+
         {% if user.is_landlord %}
         <a href="{% url 'unit_create' apartment.id %}">Add Unit</a>
         {% endif %}
@@ -92,4 +103,28 @@
     </div>
 
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {% endblock %}

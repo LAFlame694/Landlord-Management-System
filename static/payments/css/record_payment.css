@@ -6,7 +6,7 @@
 
 body {
     font-family: "Segoe UI", system-ui, sans-serif;
-    background: #f1f5f9;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
     color: #1f2937;
 }
 

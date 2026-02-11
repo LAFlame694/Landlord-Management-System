@@ -232,6 +232,17 @@ def apartment_list(request):
         .annotate(total_units=Count('units'))
     )
 
+    # AJAX request → return partial HTML
+    if request.GET.get('ajax') == '1':
+        return render(
+            request,
+            'properties/partials/apartment_cards.html',
+            {
+                'apartments': apartments,
+                'query': query
+            }
+        )
+
     return render(request, 'properties/apartment_list.html', {
         'apartments': apartments,
         'query': query

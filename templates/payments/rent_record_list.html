@@ -12,10 +12,25 @@
 {% block content %}
 <div class="container">
 
-  <h2>
-    Rent Records – {{ tenancy.tenant.full_name }}
-    (Unit {{ tenancy.unit.unit_number }})
-  </h2>
+  <div class="page-header">
+
+    <h2>
+      Rent Records – {{ tenancy.tenant.full_name }}
+      (Unit {{ tenancy.unit.unit_number }})
+    </h2>
+
+    <form method="get" class="search-form">
+        <input 
+            type="text"
+            name="q"
+            placeholder="Search rent record ..."
+            value="{{ query }}"
+            class="search-input"
+        >
+        <button type="submit" class="btn-search">Search</button>
+    </form>
+
+  </div>
 
   <div class="table-wrapper">
     <table>
