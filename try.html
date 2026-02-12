@@ -1,56 +1,43 @@
-{% extends "base.html" %}
+<!-- Outstanding Tenants Section -->
+<div class="outstanding-section">
 
-{% block content %}
+    <h2 class="outstanding-title">
+        Outstanding Balances – {{ month_name }} {{ current_year }}
+    </h2>
 
-<h2>Tenant & Tenancy Details</h2>
+    {% if unpaid_tenants %}
+        <div class="outstanding-grid">
 
-<form method="post">
-    {% csrf_token %}
+            {% for item in unpaid_tenants %}
+                <div class="outstanding-card">
 
-    <fieldset>
-        <legend>Tenant Details</legend>
+                    <div class="outstanding-header">
+                        <h3>{{ item.tenant_name }}</h3>
+                        <span class="balance-badge">
+                            KES {{ item.balance }}
+                        </span>
+                    </div>
 
-        <div>
-            <label>Full Name</label><br>
-            {{ tenant_form.full_name }}
+                    <div class="outstanding-details">
+                        <p><strong>Apartment:</strong> {{ item.apartment }}</p>
+                        <p><strong>Unit:</strong> {{ item.unit_number }}</p>
+                    </div>
+
+                    <div class="outstanding-actions">
+                        <a href="{% url 'rent_record_list' item.tenancy_id %}">
+                            View Rent Records →
+                        </a>
+                    </div>
+
+                </div>
+            {% endfor %}
+
         </div>
 
-        <div>
-            <label>Phone</label><br>
-            {{ tenant_form.phone }}
+    {% else %}
+        <div class="no-outstanding">
+            ✅ All tenants have cleared rent for {{ month_name }}.
         </div>
+    {% endif %}
 
-        <div>
-            <label>Email</label><br>
-            {{ tenant_form.email }}
-        </div>
-
-        <div>
-            <label>National ID</label><br>
-            {{ tenant_form.national_id }}
-        </div>
-    </fieldset>
-
-    <br>
-
-    <fieldset>
-        <legend>Tenancy Details</legend>
-
-        <div>
-            <label>Start Date</label><br>
-            {{ tenancy_form.start_date }}
-        </div>
-
-        <div>
-            <label>End Date</label><br>
-            {{ tenancy_form.end_date }}
-        </div>
-    </fieldset>
-
-    <br>
-
-    <button type="submit">
-        Save Changes
-    </button>
-</form>
-{% endblock %}
+</div>

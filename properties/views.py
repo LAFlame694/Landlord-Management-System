@@ -209,12 +209,33 @@ def apartment_units(request, apartment_id):
 
     else:
         raise PermissionDenied
+    
+    query = request.GET.get('q', '')
 
-    units = apartment.units.prefetch_related('tenancies')
+    units = (
+        apartment.units
+        .prefetch_related('tenancies__tenant')
+        .filter(
+            Q(unit_number__icontains=query) |
+            Q(tenancies__tenant__full_name__icontains=query)
+        ).distinct()
+    )
+
+    # AJAX request
+    if request.GET.get('ajax') == '1':
+        return render(
+            request,
+            'properties/partials/unit_cards.html', {
+                'units': units,
+                'query': query,
+                'apartment': apartment
+            }
+        )
 
     return render(request, 'properties/unit_list.html', {
         'apartment': apartment,
-        'units': units
+        'units': units,
+        'query': query
     })
 
 @login_required

@@ -1,0 +1,73 @@
+{% for unit in units %}
+
+<div class="unit-card {% if unit.is_occupied %}occupied{% else %}vacant{% endif %}">
+    <div class="unit-header">
+        <h3>Unit {{ unit.unit_number }}</h3>
+
+        {% if unit.is_occupied %}
+            <span class="status-badge status-occupied">Occupied</span>
+        {% else %}
+            <span class="status-badge status-vacant">Vacant</span>
+        {% endif %}
+    </div>
+
+    <div class="unit-details">
+        <p><span>Rent:</span> KES {{ unit.rent }}</p>
+
+        {% if unit.is_occupied and unit.active_tenancy %}
+            <p>
+                <span>Tenant:</span>
+                {{ unit.active_tenancy.tenant.full_name }}
+            </p>
+        {% else %}
+            <p><span>Tenant:</span> —</p>
+        {% endif %}
+    </div>
+
+    <div class="unit-actions">
+        {% if user.is_landlord %}
+        <a href="{% url 'unit_edit' unit.id %}"
+                class="btn btn-edit">
+                Edit Unit
+        </a>
+        {% endif %}
+
+        {% if unit.is_occupied and unit.active_tenancy %}
+            <a href="{% url 'rent_record_list' unit.active_tenancy.id %}"
+                class="btn btn-records">
+                Rent Records
+            </a>
+
+            <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}"
+                class="btn btn-vacate">
+                Vacate
+            </a>
+
+            <a href="{% url 'tenancy_detail' unit.active_tenancy.id %}"
+                class="btn btn-edit">
+                View Tenant
+            </a>
+
+        {% else %}
+            {% if user.is_landlord or user.is_caretaker %}
+                <a href="{% url 'assign_tenant' unit.id %}"
+                    class="btn btn-records">
+                    Assign Tenant
+                </a>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>
+
+{% empty %}
+<div class="unit-card">
+    {% if query %}
+        <h3>No results found</h3>
+        <p>No unit or tenant match "{{ query }}"</p>
+    {% else %}
+        <h3>No unit yet</h3>
+        <p>No units yet.</p>
+    {% endif %}
+</div>
+{% endfor %}

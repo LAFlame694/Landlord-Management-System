@@ -2,11 +2,18 @@
 
 {% load static %}
 
-    <title>Landlord Dashboard</title>
-    {% block extra_css %}
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'dashboards/css/landlord_dashboard.css' %}">
-    {% endblock %}
+<title>Landlord Dashboard</title>
+
+{% block extra_css %}
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'dashboards/css/landlord_dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="dashboard-container">
@@ -66,6 +73,55 @@
         </div>
 
     </div>
+
+    <!-- Outstanding Tenants Section -->
+     <div class="overview-title">
+        <h2>Outstanding Balances – {{ month_name }} {{ current_year }}</h2>
+    </div>
+
+    {% if unpaid_tenants %}
+    <div class="cards-grid">
+
+        {% for item in unpaid_tenants %}
+        <div class="tenant-card">
+            <div>
+                <div class="tenant-name">
+                    <i class="fa-solid fa-user"></i> {{ item.tenant_name }}
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-money-bill"></i>
+                    Balance: <span class="balance">KES {{ item.balance }}</span>
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-building"></i>
+                    Apartment: {{ item.apartment }}
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-door-open"></i>
+                    Unit: {{ item.unit_number }}
+                </div>
+            </div>
+
+            <a href="{% url 'rent_record_list' item.tenancy_id %}" class="view-link">
+                <i class="fa-solid fa-file-invoice"></i>
+                View Rent Records
+            </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="tenant-card paid-card">
+            <div>
+                <i class="fa-solid fa-circle-check"></i>
+                <p>All Tenants have paid for this month.</p>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
 
 </div>
 {% endblock %}

@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.utils import landlord_required, caretaker_required
 from datetime import date
-from django.db.models import Sum, F
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField, Value
 from properties.models import Apartment, Unit, Tenancy
 from payments.models import RentRecord
 import calendar
 from calendar import month_name
+from django.db.models.functions import Coalesce
+from django.db import transaction
 
 # Create your views here.
 @login_required
@@ -21,6 +23,38 @@ def home_redirect(request):
     # fallback
     return redirect('accounts:login')
 
+def ensure_rent_records_for_month(landlord, year, month):
+     """
+    Ensure rent records exist for all tenancies that were active
+    during the selected month.
+    """
+     first_day = date(year, month, 1)
+     last_day = date(year, month, calendar.monthrange(year, month)[1])
+
+     tenancies = Tenancy.objects.filter(
+         unit__apartment__landlord=landlord
+     ).select_related('unit')
+
+     for tenancy in tenancies:
+         # check if tenancy was active during this month
+         started_before_month_end = tenancy.start_date <= last_day
+         not_ended_before_month_start = (
+             tenancy.end_date is None or tenancy.end_date >= first_day
+         )
+
+         if started_before_month_end and not_ended_before_month_start:
+             
+             # if rent record doesnt exist, create it
+             RentRecord.objects.get_or_create(
+                 tenancy=tenancy,
+                 year=year,
+                 month=month,
+                 defaults={
+                     'rent_amount': tenancy.unit.rent,
+                     'total_paid': 0
+                 }
+             )
+
 @login_required
 @landlord_required
 def landlord_dashboard(request):
@@ -32,6 +66,39 @@ def landlord_dashboard(request):
     # FILTER: default to current month
     selected_month = int(request.GET.get('month', today.month))
     month_name = calendar.month_name[selected_month]
+
+    ensure_rent_records_for_month(landlord, current_year, selected_month)
+
+    active_tenancies = Tenancy.objects.filter(
+        unit__apartment__landlord=request.user,
+        is_active=True
+    ).select_related(
+        'tenant',
+        'unit',
+        'unit__apartment'
+    )
+    
+    unpaid_tenants = []
+
+    for tenancy in active_tenancies:
+
+        rent_record = RentRecord.objects.filter(
+            tenancy=tenancy,
+            month=selected_month,
+            year=current_year
+        ).first()
+
+        if rent_record:
+            balance = rent_record.rent_amount - rent_record.total_paid
+
+            if balance > 0:
+                unpaid_tenants.append({
+                    'tenant_name': f"{tenancy.tenant.full_name}",
+                    'apartment': tenancy.unit.apartment.name,
+                    'unit_number': tenancy.unit.unit_number,
+                    'balance': balance,
+                    'tenancy_id': tenancy.id,
+                })
 
     # Apartments and units
     apartments = Apartment.objects.filter(landlord=landlord)
@@ -75,6 +142,7 @@ def landlord_dashboard(request):
         'current_year': current_year,
         'selected_month': selected_month,
         'month_name': month_name,
+        'unpaid_tenants': unpaid_tenants,
     })
 
 @login_required

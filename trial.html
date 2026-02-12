@@ -1,57 +1,209 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Outstanding Balances January</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% load static %}
-<title>Update User Password</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-{% block extra_css %}
-<!-- CSS -->
-<link rel="stylesheet" href="{% static 'accounts/css/update_password.css' %}">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<!-- Font Awesome -->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-{% endblock %}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            padding: 40px 20px;
+        }
 
-{% block content %}
-<div class="form-wrapper">
-    <div class="form-card">
-        <div class="form-header">
-            <h2>
-                <i class="fa-solid fa-key"></i>
-                Update User Password
-            </h2>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .tenant-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tenant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .tenant-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 14px;
+        }
+
+        .tenant-info {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance {
+            font-weight: 600;
+            color: #dc2626;
+        }
+
+        .view-link {
+            margin-top: 18px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2563eb;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s ease;
+        }
+
+        .view-link:hover {
+            color: #1e40af;
+        }
+
+        /* Special Paid Card */
+        .paid-card {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .paid-card i {
+            font-size: 36px;
+            margin-bottom: 14px;
+        }
+
+        .paid-card p {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>Outstanding Balances January</h1>
+    </div>
+
+    <div class="cards-grid">
+
+        <!-- Tenant Card 1 -->
+        <div class="tenant-card">
+            <div>
+                <div class="tenant-name">
+                    <i class="fa-solid fa-user"></i> John Doe
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-money-bill"></i>
+                    Balance: <span class="balance">$450</span>
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-building"></i>
+                    Apartment: Sunset Apartments
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-door-open"></i>
+                    Unit: A3
+                </div>
+            </div>
+
+            <a href="#" class="view-link">
+                <i class="fa-solid fa-file-invoice"></i>
+                View Rent Records
+            </a>
         </div>
 
-        <form method="post" action="{% url 'update_password' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label>
-                    <i class="fa-solid fa-lock"></i>
-                    New Password
-                </label>
-                {{ form.new_password1 }}
+        <!-- Tenant Card 2 -->
+        <div class="tenant-card">
+            <div>
+                <div class="tenant-name">
+                    <i class="fa-solid fa-user"></i> Mary Smith
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-money-bill"></i>
+                    Balance: <span class="balance">$320</span>
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-building"></i>
+                    Apartment: Greenview Estate
+                </div>
+
+                <div class="tenant-info">
+                    <i class="fa-solid fa-door-open"></i>
+                    Unit: B1
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>
-                    <i class="fa-solid fa-lock-open"></i>
-                    Confirm Password
-                </label>
-                {{ form.new_password2 }}
-            </div>
+            <a href="#" class="view-link">
+                <i class="fa-solid fa-file-invoice"></i>
+                View Rent Records
+            </a>
+        </div>
 
-            <div class="form-actions">
-                <button type="submit" class="submit-btn">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Update Password
-                </button>
+        <!-- Special Paid Card -->
+        <div class="tenant-card paid-card">
+            <div>
+                <i class="fa-solid fa-circle-check"></i>
+                <p>All Tenants have paid for this month.</p>
             </div>
-        </form>
+        </div>
+
     </div>
+
 </div>
-{% endblock %}
+
+</body>
+</html>

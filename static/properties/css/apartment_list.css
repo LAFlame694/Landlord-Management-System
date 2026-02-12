@@ -132,9 +132,7 @@ body {
     box-shadow: 0 6px 14px rgba(0,0,0,0.06);
     position: relative;
     overflow: hidden;
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
+    animation: appear 0.5s ease forwards;
 }
 
 .apartment-card::before {

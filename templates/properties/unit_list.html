@@ -18,10 +18,12 @@
         <form method="get" class="search-form">
             <input 
                 type="text"
+                id="unit-search"
                 name="q"
                 placeholder="Search unit number, tenant name..."
                 value="{{ query }}"
                 class="search-input"
+                autocomplete="off"
             >
             <button type="submit" class="btn-search">Search</button>
         </form>
@@ -32,77 +34,33 @@
     </div>
 
     <!-- Units -->
-    <div class="units-grid">
-
-        {% for unit in units %}
-
-        <div class="unit-card {% if unit.is_occupied %}occupied{% else %}vacant{% endif %}">
-            <div class="unit-header">
-                <h3>Unit {{ unit.unit_number }}</h3>
-
-                {% if unit.is_occupied %}
-                    <span class="status-badge status-occupied">Occupied</span>
-                {% else %}
-                    <span class="status-badge status-vacant">Vacant</span>
-                {% endif %}
-            </div>
-
-            <div class="unit-details">
-                <p><span>Rent:</span> KES {{ unit.rent }}</p>
-
-                {% if unit.is_occupied and unit.active_tenancy %}
-                    <p>
-                        <span>Tenant:</span>
-                        {{ unit.active_tenancy.tenant.full_name }}
-                    </p>
-                {% else %}
-                    <p><span>Tenant:</span> —</p>
-                {% endif %}
-            </div>
-
-            <div class="unit-actions">
-                {% if user.is_landlord %}
-                <a href="{% url 'unit_edit' unit.id %}"
-                       class="btn btn-edit">
-                        Edit Unit
-                </a>
-                {% endif %}
-
-                {% if unit.is_occupied and unit.active_tenancy %}
-                    <a href="{% url 'rent_record_list' unit.active_tenancy.id %}"
-                       class="btn btn-records">
-                        Rent Records
-                    </a>
-
-                    <a href="{% url 'vacate_tenant' unit.active_tenancy.id %}"
-                       class="btn btn-vacate">
-                        Vacate
-                    </a>
-
-                    <a href="{% url 'tenancy_detail' unit.active_tenancy.id %}"
-                       class="btn btn-edit">
-                        View Tenant
-                    </a>
-
-                {% else %}
-                    {% if user.is_landlord or user.is_caretaker %}
-                        <a href="{% url 'assign_tenant' unit.id %}"
-                           class="btn btn-records">
-                            Assign Tenant
-                        </a>
-                    {% endif %}
-                {% endif %}
-
-            </div>
-        </div>
-
-        {% empty %}
-            <p>No units yet.</p>
-        {% endfor %}
-
+    <div class="units-grid" id="units-grid">
+        {% include 'properties/partials/unit_cards.html' %}
     </div>
-
 </div>
+
+<script>
+    const searchInput = document.querySelector('.search-input');
+    const unitsGrid = document.getElementById('units-grid');
+
+    let timeout = null;
+
+    searchInput.addEventListener('keyup', function () {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            const query = searchInput.value;
+
+            fetch(`?q=${encodeURIComponent(query)}&ajax=1`)
+            .then(response => response.text())
+            .then(html => {
+                unitsGrid.innerHTML = html;
+            });
+        }, 300);
+
+    });
+</script>
+
 <br>
 <br>
 <br>
