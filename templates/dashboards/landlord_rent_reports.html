@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+<title>Monthly Reports</title>
+
+{% block extra_css %}
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'dashboards/css/landlord_rent_reports.css' %}">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="page-header">
+        <h1>Monthly Reports</h1>
+    </div>
+
+    <form method="get">
+
+        <!-- FILTERS -->
+        <div class="filters">
+
+            <!-- Year -->
+            <select name="year">
+                {% for y in year_range %}
+                <option value="{{ y }}"
+                    {% if y == selected_year %}selected{% endif %}>
+                    {{ y }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <!-- Month -->
+            <select name="month">
+                {% for value, name in months %}
+                <option value="{{ value }}"
+                    {% if value == selected_month %}selected{% endif %}>
+                    {{ name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <!-- Apartment -->
+            <select name="apartment">
+                {% for apartment in apartments %}
+                <option value="{{ apartment.id }}"
+                    {% if apartment == selected_apartment %}selected{% endif %}>
+                    {{ apartment.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button class="apply-btn" type="submit">
+                <i class="fa-solid fa-filter"></i> Apply
+            </button>
+        </div>
+    </form>
+
+    <!-- SUMMARY -->
+    <div class="summary-cards">
+        <div class="card">
+            <h3>Expected Total</h3>
+            <p class="expected">{{ expected_rent }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Collected</h3>
+            <p class="collected">{{ collected_rent }}</p>
+            <small>{{ collection_rate }}% collected</small>
+        </div>
+
+        <div class="card">
+            <h3>Outstanding</h3>
+            <p class="outstanding">{{ outstanding_balance }}</p>
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+        <button class="action-btn pdf-btn">
+            <i class="fa-solid fa-file-pdf"></i> Download PDF
+        </button>
+
+        <button class="action-btn csv-btn">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+        </button>
+
+        <button class="action-btn reminder-btn">
+            <i class="fa-solid fa-bell"></i> Send Reminder
+        </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>Unit</th>
+                    <th>Expected</th>
+                    <th>Paid</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in rent_records %}
+                <tr class="
+                    {% if record.status == 'PAID' %}paid
+                    {% elif record.status == 'PARTIAL' %}partial
+                    {% elif record.status == 'UNPAID' %}unpaid
+                    {% endif %}
+                ">
+                    <td>{{ record.tenancy.tenant.full_name }}</td>
+                    <td>{{ record.tenancy.unit.unit_number }}</td>
+                    <td>{{ record.rent_amount }}</td>
+                    <td>{{ record.total_paid }}</td>
+                    <td>{{ record.computed_balance }}</td>
+
+                    <td class="
+                        {% if record.status == 'PAID' %}status-paid
+                        {% elif record.status == 'PARTIAL' %}status-partial
+                        {% elif record.status == 'UNPAID' %}status-unpaid
+                        {% endif %}
+                    ">
+                        {{ record.status }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No rent records available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+{% endblock %}

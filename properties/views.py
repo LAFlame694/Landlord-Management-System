@@ -127,9 +127,8 @@ def vacate_tenant(request, tenancy_id):
     tenancy = Tenancy.objects.get(id=tenancy_id, is_active=True)
 
     # permission check
-    if request.user.is_caretaker():
-        if tenancy.unit.apartment not in request.user.assigned_apartments.all():
-            raise PermissionDenied
+    if not (request.user.is_landlord() or request.user.is_caretaker()):
+        raise PermissionDenied
     
     tenancy.is_active = False
     tenancy.end_date = timezone.now()
@@ -138,8 +137,13 @@ def vacate_tenant(request, tenancy_id):
     unit = tenancy.unit
     unit.status = 'VACANT'
     unit.save()
+    messages.success(request, "Tenant vacated successfuly")
 
-    return redirect('caretaker_dashboard')
+    if request.user.is_landlord():
+        return redirect('landlord_dashboard')
+    
+    else:
+        return redirect('caretaker_dashboard')
 
 @login_required
 @landlord_required

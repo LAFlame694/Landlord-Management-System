@@ -5,5 +5,6 @@ from .views import landlord_dashboard, caretaker_dashboard
 urlpatterns = [
     path('landlord/', landlord_dashboard, name='landlord_dashboard'),
     path('caretaker/', caretaker_dashboard, name='caretaker_dashboard'),
-    path('home/', views.home_redirect, name='home')
+    path('home/', views.home_redirect, name='home'),
+    path('landlord/rent-reports/', views.landlord_rent_reports, name='landlord_rent_reports'),
 ]

@@ -1,33 +1,67 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-<!-- About Content -->
 {% block content %}
-<header class="bg-dark py-5">
-  <div class="container px-4 px-lg-5 my-5">
-    <div class="text-center text-white">
-      <h1 class="display-4 fw-bolder">Update Password</h1>
-      <p class="lead fw-normal text-white-50 mb-0">Update User Password...</p>
-    </div>
-  </div>
-</header>
+<form method="get" class="report-filters">
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <br /><br />
-      <form method="POST" action="{% url 'update_password' %}">
-        {% csrf_token %}
-        <!---->
-        {{ form.as_p }}
-        <br /><br />
-        <button type="submit" class="btn btn-secondary">Update Password</button>
-      </form>
-      <br /><br />
-      <br /><br />
-      <br /><br />
-      <br /><br />
-      <br /><br />
-    </div>
-  </div>
-</div>
+    <!-- Year -->
+    <select name="year">
+        {% for y in year_range %}
+            <option value="{{ y }}"
+                {% if y == selected_year %}selected{% endif %}>
+                {{ y }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <!-- Month -->
+    <select name="month">
+        {% for value, name in months %}
+        <option value="{{ value }}"
+            {% if value == selected_month %}selected{% endif %}>
+            {{ name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <!-- Apartment -->
+    <select name="apartment">
+        {% for apartment in apartments %}
+            <option value="{{ apartment.id }}"
+                {% if apartment == selected_apartment %}selected{% endif %}>
+                {{ apartment.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Apply</button>
+</form>
+
+<table class="rent-report-table">
+    <thead>
+        <tr>
+            <th>Tenant</th>
+            <th>Unit</th>
+            <th>Expected</th>
+            <th>Paid</th>
+            <th>Balance</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in rent_records %}
+        <tr class="{% if record.computed_balance > 0 %}unpaid-row{% endif %}">
+            <td>{{ record.tenancy.tenant.full_name }}</td>
+            <td>{{ record.tenancy.unit.unit_number }}</td>
+            <td>{{ record.rent_amount }}</td>
+            <td>{{ record.total_paid }}</td>
+            <td>{{ record.computed_balance }}</td>
+            <td>{{ record.status }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No rent records available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

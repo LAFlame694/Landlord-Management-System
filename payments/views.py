@@ -54,15 +54,6 @@ def rent_record_list(request, tenancy_id):
 
     today = date.today()
 
-    RentRecord.objects.get_or_create(
-        tenancy = tenancy,
-        year = today.year,
-        month = today.month,
-        defaults={
-            'rent_amount': tenancy.unit.rent
-        }
-    )
-
     # permission checks
     if request.user.is_landlord():
         if tenancy.unit.apartment.landlord != request.user:

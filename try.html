@@ -1,43 +1,128 @@
-<!-- Outstanding Tenants Section -->
-<div class="outstanding-section">
+{% extends "base.html" %}
 
-    <h2 class="outstanding-title">
-        Outstanding Balances – {{ month_name }} {{ current_year }}
-    </h2>
+{% load static %}
 
-    {% if unpaid_tenants %}
-        <div class="outstanding-grid">
+<title>Monthly Reports</title>
 
-            {% for item in unpaid_tenants %}
-                <div class="outstanding-card">
+{% block extra_css %}
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'dashboards/css/landlord_rent_reports.css' %}">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
 
-                    <div class="outstanding-header">
-                        <h3>{{ item.tenant_name }}</h3>
-                        <span class="balance-badge">
-                            KES {{ item.balance }}
-                        </span>
-                    </div>
+{% block content %}
+<div class="container">
 
-                    <div class="outstanding-details">
-                        <p><strong>Apartment:</strong> {{ item.apartment }}</p>
-                        <p><strong>Unit:</strong> {{ item.unit_number }}</p>
-                    </div>
+    <div class="page-header">
+        <h1>Monthly Reports</h1>
+    </div>
 
-                    <div class="outstanding-actions">
-                        <a href="{% url 'rent_record_list' item.tenancy_id %}">
-                            View Rent Records →
-                        </a>
-                    </div>
+    <!-- FILTERS -->
+    <div class="filters">
+        <select>
+            <option>Select Month</option>
+            <option>January</option>
+            <option>February</option>
+        </select>
 
-                </div>
-            {% endfor %}
+        <select>
+            <option>Select Year</option>
+            <option>2025</option>
+            <option>2026</option>
+        </select>
 
+        <select>
+            <option>Select Apartment</option>
+            <option>Sunset Apartments</option>
+            <option>Greenview Estate</option>
+        </select>
+
+        <button class="apply-btn">
+            <i class="fa-solid fa-filter"></i> Apply
+        </button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-cards">
+        <div class="card">
+            <h3>Expected Total</h3>
+            <p class="expected">$15,000</p>
         </div>
 
-    {% else %}
-        <div class="no-outstanding">
-            ✅ All tenants have cleared rent for {{ month_name }}.
+        <div class="card">
+            <h3>Collected</h3>
+            <p class="collected">$12,000</p>
         </div>
-    {% endif %}
+
+        <div class="card">
+            <h3>Outstanding</h3>
+            <p class="outstanding">$3,000</p>
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+        <button class="action-btn pdf-btn">
+            <i class="fa-solid fa-file-pdf"></i> Download PDF
+        </button>
+
+        <button class="action-btn csv-btn">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+        </button>
+
+        <button class="action-btn reminder-btn">
+            <i class="fa-solid fa-bell"></i> Send Reminder
+        </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>Unit</th>
+                    <th>Expected</th>
+                    <th>Paid</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr class="paid">
+                    <td>John Doe</td>
+                    <td>A3</td>
+                    <td>$1000</td>
+                    <td>$1000</td>
+                    <td>$0</td>
+                    <td class="status-paid">Paid</td>
+                </tr>
+
+                <tr class="partial">
+                    <td>Mary Smith</td>
+                    <td>B1</td>
+                    <td>$1200</td>
+                    <td>$800</td>
+                    <td>$400</td>
+                    <td class="status-partial">Partial</td>
+                </tr>
+
+                <tr class="unpaid">
+                    <td>James Brown</td>
+                    <td>C4</td>
+                    <td>$900</td>
+                    <td>$0</td>
+                    <td>$900</td>
+                    <td class="status-unpaid">Unpaid</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
 
 </div>
+{% endblock %}

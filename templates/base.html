@@ -20,6 +20,7 @@
 <body> 
     <header>
         <a href="{% url 'home' %}" class="home">Home</a>
+        <a href="{% url 'landlord_rent_reports' %}" class="profile">Reports</a>
         <a href="{% url 'my_profile' %}" class="profile">My Profile</a>
 
         {% if user.is_authenticated %}
