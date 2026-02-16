@@ -11,6 +11,14 @@ from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.db import transaction
 from django.db import models
+import csv
+from django.http import HttpResponse
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib import colors, pagesizes
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+from io import BytesIO
 
 # Create your views here.
 @login_required
@@ -38,7 +46,7 @@ def ensure_rent_records_for_month(landlord, year, month):
 
     today = date.today()
 
-    # 🚫 Do not allow future generation
+    # Do not allow future generation
     if (year, month) > (today.year, today.month):
         return
 
@@ -248,6 +256,116 @@ def landlord_rent_reports(request):
         collection_rate = round(
             (collected_rent / expected_rent) * 100, 2
         )
+
+    export_type = request.GET.get('export')
+
+    # CSV Section
+    if export_type == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        filename = f"rent_report_{selected_apartment.name}_{calendar.month_name[selected_month]}_{selected_year}.csv"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+        writer = csv.writer(response)
+
+        # Header
+        writer.writerow([
+            'Tenant',
+            'Unit',
+            'Expected',
+            'paid',
+            'Balance',
+            'Status'
+        ])
+
+        # Rows
+        for record in rent_records:
+            writer.writerow([
+                record.tenancy.tenant.full_name,
+                record.tenancy.unit.unit_number,
+                record.rent_amount,
+                record.total_paid,
+                record.computed_balance,
+                record.status
+            ])
+        return response
+    
+    # PDF Section
+    if export_type == 'pdf':
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=pagesizes.A4
+        )
+
+        elements = []
+
+        styles = getSampleStyleSheet()
+
+        # Title
+        title = f"Rent Report - {selected_apartment.name} - {calendar.month_name[selected_month]} {selected_year}"
+        elements.append(Paragraph(title, styles['Heading1']))
+        elements.append(Spacer(1, 0.3 * inch))
+
+        # Summery
+        summery_data = [
+            ["Expected Total", str(expected_rent)],
+            ["Collected", str(collected_rent)],
+            ["Outstanding", str(outstanding_balance)],
+            ["Collection Rate", f"{collection_rate}"]
+        ]
+
+        summery_table = Table(summery_data, colWidths=[200, 200])
+        summery_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.whitesmoke),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ]))
+
+        elements.append(summery_table)
+        elements.append(Spacer(1, 0.5 * inch))
+
+        # Table Header
+        data = [[
+            "Tenant",
+            "Unit",
+            "Expected",
+            "Paid",
+            "Balance",
+            "Status"
+        ]]
+
+        # Table Rows
+        for record in rent_records:
+            data.append([
+                record.tenancy.tenant.full_name,
+                record.tenancy.unit.unit_number,
+                str(record.rent_amount),
+                str(record.total_paid),
+                str(record.computed_balance),
+                record.status
+            ])
+        
+        table = Table(data, repeatRows=1)
+
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,0), colors.lightgrey),
+            ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
+            ('ALIGN', (2,1), (-2,-1), 'RIGHT'),
+        ]))
+
+        elements.append(table)
+        doc.build(elements)
+        buffer.seek(0)
+
+        response = HttpResponse(
+            buffer,
+            content_type='application/pdf'
+        )
+
+        filename = f"rent_report_{selected_apartment.name}_{calendar.month_name[selected_month]}_{selected_year}.pdf"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+        return response
 
     return render(request, 'dashboards/landlord_rent_reports.html', {
         'apartments': apartments,

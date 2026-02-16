@@ -59,7 +59,24 @@
                 <i class="fa-solid fa-filter"></i> Apply
             </button>
         </div>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+            <button class="action-btn pdf-btn" type="submit" name="export" value="pdf">
+                <i class="fa-solid fa-file-pdf"></i> Download PDF
+            </button>
+
+            <button class="action-btn csv-btn" type="submit" name="export" value="csv">
+                <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+
+            <button class="action-btn reminder-btn" type="button">
+                <i class="fa-solid fa-bell"></i> Send Reminder
+            </button>
+        </div>
+
     </form>
+
 
     <!-- SUMMARY -->
     <div class="summary-cards">
@@ -78,21 +95,6 @@
             <h3>Outstanding</h3>
             <p class="outstanding">{{ outstanding_balance }}</p>
         </div>
-    </div>
-
-    <!-- ACTIONS -->
-    <div class="actions">
-        <button class="action-btn pdf-btn">
-            <i class="fa-solid fa-file-pdf"></i> Download PDF
-        </button>
-
-        <button class="action-btn csv-btn">
-            <i class="fa-solid fa-file-csv"></i> Export CSV
-        </button>
-
-        <button class="action-btn reminder-btn">
-            <i class="fa-solid fa-bell"></i> Send Reminder
-        </button>
     </div>
 
     <!-- TABLE -->

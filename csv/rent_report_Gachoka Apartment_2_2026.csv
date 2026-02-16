@@ -1,0 +1,4 @@
+Tenant,Unit,Expected,paid,Balance,Status
+John Mwangi,A1,6000,6000,0,PAID
+Gloria Waithira,A2,6000,6000,0,PAID
+Luis Kariuki,A3,6000,4000,2000,PARTIAL
