@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from accounts.utils import landlord_required, caretaker_required
+from accounts.utils import landlord_required, caretaker_required, landlord_or_caretaker_required
 from datetime import date
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField, Value
 from properties.models import Apartment, Unit, Tenancy
@@ -13,6 +13,7 @@ from django.db import transaction
 from django.db import models
 import csv
 from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib import colors, pagesizes
@@ -179,17 +180,23 @@ def landlord_dashboard(request):
     })
 
 @login_required
-@landlord_required
+@landlord_or_caretaker_required
 def landlord_rent_reports(request):
-    landlord = request.user
+    user = request.user
+
+    if user.role == 'LANDLORD':
+        apartments = Apartment.objects.filter(
+            landlord=user
+        ).order_by('name')
+
+    elif user.role == 'CARETAKER':
+        apartments = Apartment.objects.filter(
+            caretakers=user
+        ).order_by('name')
 
     today = date.today()
     current_year = today.year
     current_month = today.month
-
-    apartments = Apartment.objects.filter(
-        landlord=landlord
-    ).order_by('name')
 
     if not apartments.exists():
         return render(request, 'dashboard/landlord_rent_reports.html', {
@@ -208,13 +215,6 @@ def landlord_rent_reports(request):
     selected_apartment = apartments.filter(
         id=selected_apartment_id
     ).first()
-
-    # Ensure rent records exist for valid tenancies
-    ensure_rent_records_for_month(
-        landlord,
-        selected_year,
-        selected_month
-    )
 
     # RENT RECORD QUERY
     rent_records = RentRecord.objects.filter(
@@ -258,6 +258,10 @@ def landlord_rent_reports(request):
         )
 
     export_type = request.GET.get('export')
+
+    # only landlords can export
+    if export_type and request.user != "LANDLORD":
+        raise PermissionDenied("You are not allowed to export reports.")
 
     # CSV Section
     if export_type == 'csv':

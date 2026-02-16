@@ -61,7 +61,9 @@
         </div>
 
         <!-- ACTIONS -->
+         
         <div class="actions">
+            {% if request.user.role == "LANDLORD" %}
             <button class="action-btn pdf-btn" type="submit" name="export" value="pdf">
                 <i class="fa-solid fa-file-pdf"></i> Download PDF
             </button>
@@ -69,6 +71,7 @@
             <button class="action-btn csv-btn" type="submit" name="export" value="csv">
                 <i class="fa-solid fa-file-csv"></i> Export CSV
             </button>
+            {% endif %}
 
             <button class="action-btn reminder-btn" type="button">
                 <i class="fa-solid fa-bell"></i> Send Reminder

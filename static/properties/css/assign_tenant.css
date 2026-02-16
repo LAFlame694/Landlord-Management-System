@@ -18,7 +18,7 @@
     }
 
     body {
-        background-color: var(--bg);
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
         color: var(--text-dark);
     }
 
@@ -40,7 +40,7 @@
 
     .page-header h2 {
         font-size: 1.6rem;
-        color: var(--primary);
+        color: var(--bg);
     }
 
     .btn-back {

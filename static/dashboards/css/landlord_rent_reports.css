@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #f1f5f9;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
 }
 
 .container {
@@ -22,7 +22,7 @@ body {
 .page-header h1 {
     font-size: 26px;
     font-weight: 700;
-    color: #0f172a;
+    color: #f1f5f9;
 }
 
 /* FILTER SECTION */
